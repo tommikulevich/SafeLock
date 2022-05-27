@@ -4,11 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c1a41b83-1d09-47eb-abfe-ab797919a7b5" name="Changes" comment="Initial commit">
-      <change afterPath="$PROJECT_DIR$/src/ExtendedSimpleAnimation3d.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/TischClass.java" afterDir="false" />
+    <list default="true" id="c1a41b83-1d09-47eb-abfe-ab797919a7b5" name="Changes" comment="Example project">
+      <change afterPath="$PROJECT_DIR$/src/CheckerFloor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Checkers3D.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ColouredTiles.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/WrapCheckers3D.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/SafeLock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/SafeLock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/SafeLock.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,6 +25,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -36,28 +43,37 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Problems&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "X:/Java3D-master",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "project.structure.last.edited": "Problems",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.2"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="X:\Politechnika\Projekty\POiGK-Project\SafeLock\src" />
       <recent name="X:\Politechnika\Projekty\POiGK-Project\SafeLock\lib" />
       <recent name="X:\Politechnika\Projekty\POiGK-Project\SafeLock" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.SafeLock">
+  <component name="RunManager" selected="Application.Checkers3D">
+    <configuration name="Checkers3D" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Checkers3D" />
+      <module name="SafeLock" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="CuboRobotV02" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="CuboRobotV02" />
       <module name="SafeLock" />
@@ -88,6 +104,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Checkers3D" />
         <item itemvalue="Application.SafeLock" />
         <item itemvalue="Application.ExtendedSimpleAnimation3d" />
         <item itemvalue="Application.TischClass" />
@@ -104,7 +121,7 @@
       <option name="presentableId" value="Default" />
       <updated>1653214054849</updated>
       <workItem from="1653214056604" duration="1532000" />
-      <workItem from="1653643586954" duration="4691000" />
+      <workItem from="1653643586954" duration="9792000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <created>1653215420253</created>
@@ -113,7 +130,14 @@
       <option name="project" value="LOCAL" />
       <updated>1653215420253</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Initial commit v2.0">
+      <created>1653648943747</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1653648943747</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -133,6 +157,8 @@
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="Initial commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="Initial commit" />
+    <MESSAGE value="Initial commit v2.0" />
+    <MESSAGE value="Example project" />
+    <option name="LAST_COMMIT_MESSAGE" value="Example project" />
   </component>
 </project>
