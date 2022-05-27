@@ -1,5 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 import com.sun.j3d.utils.universe.*;
 import com.sun.j3d.utils.geometry.*;
 import javax.media.j3d.*;
@@ -64,7 +67,7 @@ public class WrapCheckers3D extends JPanel
         addBackground();      // add the sky
         sceneBG.addChild(new CheckerFloor().getBG());  // add the floor
 
-        floatingSphere();     // add the floating sphere
+        floatingCylinders();     // add the floating sphere
 
         // j3dTree.recursiveApplyCapability( sceneBG );   // set capabilities for tree display
 
@@ -137,7 +140,7 @@ public class WrapCheckers3D extends JPanel
     // ---------------------- floating sphere -----------------
 
 
-    private void floatingSphere()
+    private void floatingCylinders()
     // A shiny blue sphere located at (0,4,0)
     {
         // Create the blue appearance node
@@ -152,13 +155,45 @@ public class WrapCheckers3D extends JPanel
         Appearance blueApp = new Appearance();
         blueApp.setMaterial(blueMat);
 
-        // position the sphere
-        Transform3D t3d = new Transform3D();
-        t3d.set( new Vector3f(0,4,0));
-        TransformGroup tg = new TransformGroup(t3d);
-        tg.addChild(new Sphere(2.0f, blueApp));   // set its radius and appearance
+        int numOfCyl = 4;
 
-        sceneBG.addChild(tg);
+        ArrayList<Cylinder>cylinders = new ArrayList<Cylinder>();
+
+        for(int i = 0; i < numOfCyl; i++){
+            cylinders.add(new Cylinder(2f, 1f, blueApp));
+        }
+        cylinders.add(new Cylinder(0.5f, 5f, blueApp));
+
+        ArrayList<Transform3D>posCyl = new ArrayList<Transform3D>();
+
+        for (int i = 0, j = -1; i < numOfCyl; i++, j++){
+            Transform3D k = new Transform3D();
+            k.set(new Vector3f(0,2*j,-2));
+            posCyl.add(k);
+        }
+        Transform3D p = new Transform3D();
+        p.set(new Vector3f(0,1,-2));
+        posCyl.add(p);
+
+        ArrayList<TransformGroup>tg = new ArrayList<TransformGroup>();
+
+        for (int i = 0; i < numOfCyl+1; i++){
+            TransformGroup k = new TransformGroup(posCyl.get(i));
+            tg.add(k);
+        }
+
+        // position the cylinders
+
+        Transform3D tmp_rot = new Transform3D();
+        tmp_rot.rotX(Math.PI/2); //Math.PI/2
+        TransformGroup tg_rot = new TransformGroup(tmp_rot);
+
+        for (int i = 0; i < numOfCyl+1; i++){
+            tg.get(i).addChild(cylinders.get(i));
+            tg_rot.addChild(tg.get(i));
+        }
+
+        sceneBG.addChild(tg_rot);
     }
 
 }
