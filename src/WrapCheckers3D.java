@@ -1,7 +1,10 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.TimerTask;
 
 import com.sun.j3d.utils.universe.*;
 import com.sun.j3d.utils.geometry.*;
@@ -15,6 +18,14 @@ import com.sun.j3d.utils.behaviors.vp.*;
 public class WrapCheckers3D extends JPanel
 // Holds the 3D canvas where the loaded image is displayed
 {
+    //parameters of cylinders
+    int numOfCyl = 3;
+    float disBetCyl = 0.5f;
+    float vertPos = 3f;
+    float cylRad = 1f;
+    float cylH = 0.05f;
+    float axRad = 0.1f;
+    int posOfFirstCyl = 2;
     private static final int PWIDTH = 512;   // size of panel
     private static final int PHEIGHT = 512;
 
@@ -28,6 +39,14 @@ public class WrapCheckers3D extends JPanel
 
     // private Java3dTree j3dTree;   // frame to hold tree display
 
+
+    public void setNumOfCyl(int numOfCyl) {
+        this.numOfCyl = numOfCyl;
+    }
+
+    public int getNumOfCyl() {
+        return numOfCyl;
+    }
 
     public WrapCheckers3D()
     // A panel holding a 3D canvas: the usual way of linking Java 3D to Swing
@@ -49,13 +68,11 @@ public class WrapCheckers3D extends JPanel
         createSceneGraph();
         initUserPosition();        // set user's viewpoint
         orbitControls(canvas3D);   // controls for moving the viewpoint
-
         su.addBranchGraph( sceneBG );
 
         // j3dTree.updateNodes( su );    // build the tree display window
 
     }
-
 
     private void createSceneGraph()
     // initilize the scene
@@ -139,8 +156,7 @@ public class WrapCheckers3D extends JPanel
 
     // ---------------------- floating cylinders -----------------
 
-
-    private void floatingCylinders()
+    public void floatingCylinders()
     // A shiny blue sphere located at (0,4,0)
     {
         // Create the blue appearance node
@@ -154,14 +170,6 @@ public class WrapCheckers3D extends JPanel
 
         Appearance blueApp = new Appearance();
         blueApp.setMaterial(blueMat);
-        //parameters of cylinders
-        int numOfCyl = 20;
-        float disBetCyl = 0.5f;
-        float vertPos = 3f;
-        float cylRad = 1f;
-        float cylH = 0.05f;
-        float axRad = 0.1f;
-        int posOfFirstCyl = 2;
 
         //creating Cylinders
         ArrayList<Cylinder>cylinders = new ArrayList<Cylinder>();
