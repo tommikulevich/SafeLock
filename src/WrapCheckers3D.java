@@ -130,14 +130,14 @@ public class WrapCheckers3D extends JPanel
       steerTG.getTransform(t3d);
 
       // args are: viewer posn, where looking, up direction
-      t3d.lookAt(USERPOSN, new Point3d(0,0,0), new Vector3d(0,1,0));
+      t3d.lookAt(USERPOSN, new Point3d(0,0,0), new Vector3d(0,4,0));
       t3d.invert();
 
       steerTG.setTransform(t3d);
     }
 
 
-    // ---------------------- floating sphere -----------------
+    // ---------------------- floating cylinders -----------------
 
 
     private void floatingCylinders()
@@ -154,45 +154,52 @@ public class WrapCheckers3D extends JPanel
 
         Appearance blueApp = new Appearance();
         blueApp.setMaterial(blueMat);
+        //parameters of cylinders
+        int numOfCyl = 20;
+        float disBetCyl = 0.5f;
+        float vertPos = 3f;
+        float cylRad = 1f;
+        float cylH = 0.05f;
+        float axRad = 0.1f;
+        int posOfFirstCyl = 2;
 
-        int numOfCyl = 4;
-
+        //creating Cylinders
         ArrayList<Cylinder>cylinders = new ArrayList<Cylinder>();
-
+        //setting params of cylinders
         for(int i = 0; i < numOfCyl; i++){
-            cylinders.add(new Cylinder(2f, 1f, blueApp));
+            cylinders.add(new Cylinder(cylRad, cylH, blueApp));
         }
-        cylinders.add(new Cylinder(0.5f, 5f, blueApp));
-
+        //creating transformations of position for cylinders
         ArrayList<Transform3D>posCyl = new ArrayList<Transform3D>();
-
-        for (int i = 0, j = -1; i < numOfCyl; i++, j++){
+        //setting this transformation by position algorithm
+        int posOfLastCyl = posOfFirstCyl;
+        for (int i = 0; i < numOfCyl; i++, posOfLastCyl--){
             Transform3D k = new Transform3D();
-            k.set(new Vector3f(0,2*j,-2));
+            k.set(new Vector3f(0,disBetCyl*posOfLastCyl,-vertPos));
             posCyl.add(k);
         }
+        //setting parameters for axis by axis algorithm
+        cylinders.add(new Cylinder(axRad, disBetCyl*(posOfFirstCyl-posOfLastCyl), blueApp));
+        //creating and setting position transformation for axis
         Transform3D p = new Transform3D();
-        p.set(new Vector3f(0,1,-2));
+        p.set(new Vector3f(0, disBetCyl*(posOfFirstCyl+posOfLastCyl)/2,-vertPos));
         posCyl.add(p);
-
+        //creating transformation group and matching with transformation
         ArrayList<TransformGroup>tg = new ArrayList<TransformGroup>();
-
         for (int i = 0; i < numOfCyl+1; i++){
             TransformGroup k = new TransformGroup(posCyl.get(i));
             tg.add(k);
         }
-
-        // position the cylinders
-
+        //rotation transformation
         Transform3D tmp_rot = new Transform3D();
         tmp_rot.rotX(Math.PI/2); //Math.PI/2
         TransformGroup tg_rot = new TransformGroup(tmp_rot);
-
+        //matching transformation groups with rotation
         for (int i = 0; i < numOfCyl+1; i++){
             tg.get(i).addChild(cylinders.get(i));
             tg_rot.addChild(tg.get(i));
         }
-
+        //adding rotation to scene
         sceneBG.addChild(tg_rot);
     }
 
