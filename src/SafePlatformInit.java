@@ -3,13 +3,15 @@ import javax.vecmath.*;
 import java.util.ArrayList;
 
 
-public class ColouredTiles extends Shape3D 
+public class SafePlatformInit extends Shape3D
 {
+
     private final QuadArray plane;
 
-    public ColouredTiles(ArrayList coords, Color3f col)
+
+    public SafePlatformInit(ArrayList coords, Color3f col)
     {
-        plane = new QuadArray(coords.size(), GeometryArray.COORDINATES | GeometryArray.COLOR_3 );
+        plane = new QuadArray(coords.size(), GeometryArray.COORDINATES | GeometryArray.COLOR_3);
         createGeometry(coords, col);
         createAppearance();
     }
@@ -37,7 +39,7 @@ public class ColouredTiles extends Shape3D
         Appearance app = new Appearance();
 
         PolygonAttributes pa = new PolygonAttributes();
-        pa.setCullFace(PolygonAttributes.CULL_NONE); // so can see the ColouredTiles from both sides
+        pa.setCullFace(PolygonAttributes.CULL_NONE);    // so can see the ColouredTiles from both sides
         app.setPolygonAttributes(pa);
 
         setAppearance(app);

@@ -5,11 +5,12 @@ import javax.vecmath.*;
 import java.util.ArrayList;
 
 
-public class CheckerFloor
+public class SafePlatform
 {
+
     private final static int FLOOR_LEN = 20;  // should be even
 
-    // colours for floor, etc
+    // Own colours for floor
     private final static Color3f blue = new Color3f(0.0f, 0.1f, 0.4f);
     private final static Color3f green = new Color3f(0.0f, 0.5f, 0.1f);
     private final static Color3f medRed = new Color3f(0.8f, 0.4f, 0.3f);
@@ -18,8 +19,8 @@ public class CheckerFloor
     private final BranchGroup floorBG;
 
 
-    public CheckerFloor()
-    // create tiles, add origin marker, then the axes labels
+    public SafePlatform()
+    // Creating tiles, adding origin marker, then the axes labels
     {
         ArrayList blueCoords = new ArrayList();
         ArrayList greenCoords = new ArrayList();
@@ -27,10 +28,10 @@ public class CheckerFloor
 
         boolean isBlue;
 
-        for(int z=-FLOOR_LEN/2; z <= (FLOOR_LEN/2)-1; z++) {
+        for(int z = -FLOOR_LEN/2; z <= (FLOOR_LEN/2)-1; z++) {
             isBlue = z % 2 == 0;    // set colour for new row
 
-            for(int x=-FLOOR_LEN/2; x <= (FLOOR_LEN/2)-1; x++) {
+            for(int x = -FLOOR_LEN/2; x <= (FLOOR_LEN/2)-1; x++) {
                 if (isBlue)
                     createCoords(x, z, blueCoords);
                 else
@@ -40,16 +41,16 @@ public class CheckerFloor
             }
         }
 
-        floorBG.addChild(new ColouredTiles(blueCoords, blue));
-        floorBG.addChild(new ColouredTiles(greenCoords, green));
+        floorBG.addChild(new SafePlatformInit(blueCoords, blue));
+        floorBG.addChild(new SafePlatformInit(greenCoords, green));
 
         addOriginMarker();
         labelAxes();
     }
 
+
     private void createCoords(int x, int z, ArrayList coords)
-    // Coords for a single blue or green square,
-    // its left hand corner at (x,0,z)
+    // Coords for a single blue or green square, its left hand corner at (x,0,z)
     {
         // points created in counter-clockwise order
         Point3f p1 = new Point3f(x, 0.0f, z+1.0f);
@@ -75,29 +76,29 @@ public class CheckerFloor
         oCoords.add(p1); oCoords.add(p2);
         oCoords.add(p3); oCoords.add(p4);
 
-        floorBG.addChild(new ColouredTiles(oCoords, medRed));
+        floorBG.addChild(new SafePlatformInit(oCoords, medRed));
     }
 
 
     private void labelAxes()
-    // Place numbers along the X- and Z-axes at the integer positions
+    // Placing numbers along the X- and Z-axes at the integer positions
     {
         Vector3d pt = new Vector3d();
 
-        for (int i =- FLOOR_LEN/2; i <= FLOOR_LEN/2; i++) {
+        for (int i = -FLOOR_LEN/2; i <= FLOOR_LEN/2; i++) {
             pt.x = i;
             floorBG.addChild(makeText(pt,""+i) );   // along x-axis
         }
 
         pt.x = 0;
-        for (int i =- FLOOR_LEN/2; i <= FLOOR_LEN/2; i++) {
+        for (int i = -FLOOR_LEN/2; i <= FLOOR_LEN/2; i++) {
             pt.z = i;
-            floorBG.addChild(makeText(pt,""+i));   // along z-axis
+            floorBG.addChild(makeText(pt,""+i));    // along z-axis
         }
     }
 
     private TransformGroup makeText(Vector3d vertex, String text)
-    // Create a Text2D object at the specified vertex
+    // Creating a Text2D object at the specified vertex
     {
         Text2D message = new Text2D(text, white, "SansSerif", 36, Font.BOLD );
 
@@ -111,6 +112,8 @@ public class CheckerFloor
     }
 
 
-    public BranchGroup getBG() {  return floorBG;  }
+    public BranchGroup getBG() {
+        return floorBG;
+    }
 
 }
