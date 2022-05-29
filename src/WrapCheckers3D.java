@@ -1,10 +1,10 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.TimerTask;
 
 import com.sun.j3d.utils.universe.*;
 import com.sun.j3d.utils.geometry.*;
@@ -15,17 +15,22 @@ import com.sun.j3d.utils.behaviors.vp.*;
 // import com.tornadolabs.j3dtree.*;    // for displaying the scene graph
 
 
-public class WrapCheckers3D extends JPanel
+public class WrapCheckers3D extends JPanel implements ActionListener, KeyListener
 // Holds the 3D canvas where the loaded image is displayed
 {
     //parameters of cylinders
     int numOfCyl = 3;
-    float disBetCyl = 0.5f;
+    float disBetCyl = 1f;
     float vertPos = 3f;
     float cylRad = 1f;
-    float cylH = 0.05f;
+    float cylH = 0.5f;
     float axRad = 0.1f;
     int posOfFirstCyl = 2;
+    private Timer clock1;
+    private boolean lefButton = false, rightButton = false;
+    private Button startButton = new Button("Run");
+    private Button stopButton = new Button("Stop");
+
     private static final int PWIDTH = 512;   // size of panel
     private static final int PHEIGHT = 512;
 
@@ -38,16 +43,6 @@ public class WrapCheckers3D extends JPanel
     private BoundingSphere bounds;   // for environment nodes
 
     // private Java3dTree j3dTree;   // frame to hold tree display
-
-
-    public void setNumOfCyl(int numOfCyl) {
-        this.numOfCyl = numOfCyl;
-    }
-
-    public int getNumOfCyl() {
-        return numOfCyl;
-    }
-
     public WrapCheckers3D()
     // A panel holding a 3D canvas: the usual way of linking Java 3D to Swing
     {
@@ -58,9 +53,17 @@ public class WrapCheckers3D extends JPanel
         GraphicsConfiguration config = SimpleUniverse.getPreferredConfiguration();
         Canvas3D canvas3D = new Canvas3D(config);
         add("Center", canvas3D);
+        canvas3D.addKeyListener(this);
+        clock1 = new Timer(10, this);
+        JPanel panel = new JPanel();
+        panel.add(startButton);
+        panel.add(stopButton);
+        add(""+ "West",panel);
+        startButton.addActionListener(this);
+        startButton.addKeyListener(this);
+
         canvas3D.setFocusable(true);     // give focus to the canvas
         canvas3D.requestFocus();
-
         su = new SimpleUniverse(canvas3D);
 
         // j3dTree = new Java3dTree();   // create a display tree for the SG
@@ -69,9 +72,6 @@ public class WrapCheckers3D extends JPanel
         initUserPosition();        // set user's viewpoint
         orbitControls(canvas3D);   // controls for moving the viewpoint
         su.addBranchGraph( sceneBG );
-
-        // j3dTree.updateNodes( su );    // build the tree display window
-
     }
 
     private void createSceneGraph()
@@ -157,7 +157,6 @@ public class WrapCheckers3D extends JPanel
     // ---------------------- floating cylinders -----------------
 
     public void floatingCylinders()
-    // A shiny blue sphere located at (0,4,0)
     {
         // Create the blue appearance node
         Color3f black = new Color3f(0.0f, 0.0f, 0.0f);
@@ -211,4 +210,45 @@ public class WrapCheckers3D extends JPanel
         sceneBG.addChild(tg_rot);
     }
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if(e.getSource()==startButton){
+            if(!clock1.isRunning()){
+                clock1.start();
+            }
+        } else {
+            if(lefButton == true) {
+                numOfCyl++; //tutaj parametry z oborotu nałem cylidndry bo żeby coś było
+            }
+            if(rightButton == true) {
+                numOfCyl--; //tutaj parametry z oborotu nałem cylidndry bo żeby coś było
+            }
+            //tutaj transformacje obortu dodać
+            //setTransform
+        }
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        switch (e.getKeyCode()){
+            case KeyEvent.VK_LEFT:
+                lefButton = true;
+            case KeyEvent.VK_RIGHT:
+                rightButton = true;
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        switch (e.getKeyCode()){
+            case KeyEvent.VK_LEFT:
+                lefButton = false;
+            case KeyEvent.VK_RIGHT:
+                rightButton = false;
+        }
+    }
 }
