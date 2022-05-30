@@ -33,8 +33,7 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
     private Button startButton = new Button("Run");
     private Button stopButton = new Button("Stop");
 
-    private TransformGroup rotCyl = new TransformGroup();
-    //private ArrayList<TransformGroup>tg = new ArrayList<TransformGroup>();
+    private ArrayList<TransformGroup>rotCyl = new ArrayList<TransformGroup>();
 
     // parameters of cylinders
     int numOfCyl = 3;
@@ -200,30 +199,32 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
         p.set(new Vector3f(0, disBetCyl*(posOfFirstCyl+posOfLastCyl)/2,-vertPos));
         posCyl.add(p);
 
-        // creating transformation group and matching with transformation
+        // creating transformation groups and matching with transformation
         ArrayList<TransformGroup>tg = new ArrayList<TransformGroup>();
         for (int i = 0; i < numOfCyl+1; i++){
             TransformGroup k = new TransformGroup(posCyl.get(i));
             tg.add(k);
-            //tg.get(i).setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+
+            TransformGroup n = new TransformGroup();
+            rotCyl.add(n);
         }
 
         // rotation transformation
-        rotCyl.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
         Transform3D tmp_rot = new Transform3D();
-        TransformGroup tg_rot = new TransformGroup();
         tmp_rot.rotX(Math.PI/2);
-        tg_rot.setTransform(tmp_rot);
+        TransformGroup tg_rot = new TransformGroup(tmp_rot);
 
         // matching transformation groups with rotation
         for (int i = 0; i < numOfCyl+1; i++){
-            tg.get(i).addChild(cylinders.get(i));
+            rotCyl.get(i).setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+
+            rotCyl.get(i).addChild(cylinders.get(i));
+            tg.get(i).addChild(rotCyl.get(i));
             tg_rot.addChild(tg.get(i));
         }
 
         // adding rotation to scene
-        rotCyl.addChild(tg_rot);
-        sceneBG.addChild(rotCyl);
+        sceneBG.addChild(tg_rot);
     }
 
     @Override
@@ -257,18 +258,16 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
                 clock1.start();
         }
         else {
-            if(leftButton == true)
+            if(leftButton)
                 angle -= Math.PI/10;
-            else if(rightButton == true)
+            else if(rightButton)
                 angle += Math.PI/10;
 
             Transform3D rot = new Transform3D();
+            rot.rotY(angle);
 
-            rot.rotZ(angle);
-            rotCyl.setTransform(rot);
-
-            //for (int i = 0; i < numOfCyl+1; i++)
-            //    tg.get(i).setTransform(rot);
+            for (int i = 0; i < numOfCyl+1; i++)
+                rotCyl.get(i).setTransform(rot);
         }
     }
 
