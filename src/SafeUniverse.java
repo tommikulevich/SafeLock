@@ -69,7 +69,10 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
         add(""+ "North",panel);
         startButton.addActionListener(this);
         startButton.addKeyListener(this);
+        stopButton.addActionListener(this);
+        stopButton.addKeyListener(this);
         setDefaultViewButton.addKeyListener(this);
+        setDefaultViewButton.addActionListener(this);
 
         clock1 = new Timer(10, this);
 

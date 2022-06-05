@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c1a41b83-1d09-47eb-abfe-ab797919a7b5" name="Changes" comment="Initial commit">
+    <list default="true" id="c1a41b83-1d09-47eb-abfe-ab797919a7b5" name="Changes" comment="StopButton has new functionality following its name. New setDefaultViewButton was added, but doesn't have working functionality yet. The overview of the user window has been changed.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/SafeUniverse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/SafeUniverse.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,23 +38,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "G:/Inne komputery/Mój komputer/sem 4/Programowanie obiektowe i grafika komputerowa/Laboratorium5/lab05-swiatla3D",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "project.structure.last.edited": "Problems",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.2"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;G:/Inne komputery/Mój komputer/sem 4/Programowanie obiektowe i grafika komputerowa/Laboratorium5/lab05-swiatla3D&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Problems&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="X:\Politechnika\Projekty\POiGK-Project\SafeLock\src" />
@@ -141,7 +140,21 @@
       <option name="project" value="LOCAL" />
       <updated>1653648943747</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="StopButton has new functionality following its name. New setDefaultViewButton was added, but doesn't have working functionality yet. The overview of the user window has been changed.">
+      <created>1654445993214</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1654445993214</updated>
+    </task>
+    <task id="LOCAL-00004" summary="StopButton has new functionality following its name. New setDefaultViewButton was added, but doesn't have working functionality yet. The overview of the user window has been changed.">
+      <created>1654446029235</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1654446029235</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -163,6 +176,7 @@
     <MESSAGE value="Initial commit" />
     <MESSAGE value="Initial commit v2.0" />
     <MESSAGE value="Example project" />
-    <option name="LAST_COMMIT_MESSAGE" value="Example project" />
+    <MESSAGE value="StopButton has new functionality following its name. New setDefaultViewButton was added, but doesn't have working functionality yet. The overview of the user window has been changed." />
+    <option name="LAST_COMMIT_MESSAGE" value="StopButton has new functionality following its name. New setDefaultViewButton was added, but doesn't have working functionality yet. The overview of the user window has been changed." />
   </component>
 </project>
