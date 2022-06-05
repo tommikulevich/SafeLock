@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
+import com.sun.j3d.utils.geometry.Box;
 import com.sun.j3d.utils.image.TextureLoader;
 import com.sun.j3d.utils.universe.*;
 import com.sun.j3d.utils.geometry.*;
@@ -171,7 +172,7 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
     {
 
         Appearance woodStyle = new Appearance();
-        TextureLoader loader = new TextureLoader("img/wood.jpg", null);
+        TextureLoader loader = new TextureLoader("img/wood.png", null);
         ImageComponent2D image = loader.getImage();
 
         Texture2D wood = new Texture2D(Texture.BASE_LEVEL, Texture.RGBA, image.getWidth(), image.getHeight());
@@ -186,7 +187,23 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
 
         // setting params of cylinders
         for(int i = 0; i < numOfCyl; i++)
-            cylinders.add(new Cylinder(cylRad, cylH, Cylinder.GENERATE_NORMALS| Cylinder.GENERATE_TEXTURE_COORDS, woodStyle));
+            cylinders.add(new Cylinder(cylRad, cylH, Cylinder.GENERATE_NORMALS| Cylinder.GENERATE_TEXTURE_COORDS, 80, 80, woodStyle));
+
+        // creating lines on cylinders
+        for (int i = 0; i < numOfCyl; i++){
+            Appearance app = new Appearance();
+            app.setColoringAttributes(new ColoringAttributes(new Color3f(Color.BLACK), ColoringAttributes.NICEST));
+
+            Box line = new Box(axRad, cylH/1.9f, cylRad/2.0f, app);
+
+            Transform3D linePos = new Transform3D();
+            linePos.set(new Vector3f(0.0f, 0.0f, -cylRad/2));
+
+            TransformGroup lineTransform = new TransformGroup(linePos);
+            lineTransform.addChild(line);
+
+            cylinders.get(i).addChild(lineTransform);
+        }
 
         // creating transformations of position for cylinders
         ArrayList<Transform3D>posCyl = new ArrayList<Transform3D>();
@@ -200,7 +217,7 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
         }
 
         // setting parameters for axis by axis algorithm
-        cylinders.add(new Cylinder(axRad, disBetCyl*(posOfFirstCyl-posOfLastCyl), Cylinder.GENERATE_NORMALS| Cylinder.GENERATE_TEXTURE_COORDS, woodStyle));
+        cylinders.add(new Cylinder(axRad, disBetCyl*(posOfFirstCyl-posOfLastCyl), Cylinder.GENERATE_NORMALS| Cylinder.GENERATE_TEXTURE_COORDS, 80, 80, woodStyle));
 
         // creating and setting position transformation for axis
         Transform3D p = new Transform3D();
