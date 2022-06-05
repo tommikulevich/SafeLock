@@ -23,7 +23,8 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
     private static final int BOUNDSIZE = 100;   // larger than the world
 
     private static final Point3d USERPOS = new Point3d(0,5,20); // initial user position
-
+    private ViewingPlatform vp;
+    private TransformGroup steerTG;
     private SimpleUniverse su;
     private BranchGroup sceneBG;
     private BoundingSphere bounds;   // for environment nodes
@@ -33,10 +34,12 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
     private Button startButton = new Button("Run");
     private Button stopButton = new Button("Stop");
 
+    private Button setDefaultViewButton = new Button("Default View");
+
     private ArrayList<TransformGroup>rotCyl = new ArrayList<TransformGroup>();
 
     // parameters of cylinders
-    int numOfCyl = 3;
+    int numOfCyl = 15;
     float disBetCyl = 1.0f;
     float vertPos = 3.0f;
     float cylRad = 1.0f;
@@ -61,9 +64,12 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
         JPanel panel = new JPanel();
         panel.add(startButton);
         panel.add(stopButton);
-        add(""+ "West",panel);
+        panel.add(setDefaultViewButton);
+
+        add(""+ "North",panel);
         startButton.addActionListener(this);
         startButton.addKeyListener(this);
+        setDefaultViewButton.addKeyListener(this);
 
         clock1 = new Timer(10, this);
 
@@ -71,6 +77,8 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
         canvas3D.requestFocus();
         su = new SimpleUniverse(canvas3D);
 
+        vp = su.getViewingPlatform();
+        steerTG = vp.getViewPlatformTransform();
         createSceneGraph();
         initUserPosition();        // setting user's viewpoint
         orbitControls(canvas3D);   // controlling the movement of the viewpoint
@@ -144,9 +152,6 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
     private void initUserPosition()
     // Setting the user's initial viewpoint using lookAt()
     {
-        ViewingPlatform vp = su.getViewingPlatform();
-        TransformGroup steerTG = vp.getViewPlatformTransform();
-
         Transform3D t3d = new Transform3D();
         steerTG.getTransform(t3d);
 
@@ -257,18 +262,25 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
             if(!clock1.isRunning())
                 clock1.start();
         }
-        else {
-            if(leftButton)
-                angle -= Math.PI/10;
-            else if(rightButton)
-                angle += Math.PI/10;
-
-            Transform3D rot = new Transform3D();
-            rot.rotY(angle);
-
-            for (int i = 0; i < numOfCyl+1; i++)
-                rotCyl.get(i).setTransform(rot);
+        else if(e.getSource() == stopButton){
+            if(clock1.isRunning())
+                clock1.stop();
         }
+        else if(leftButton) {
+            angle -= Math.PI / 10;
+        }
+        else if(rightButton) {
+            angle += Math.PI / 10;
+        }
+        else if(e.getSource() == setDefaultViewButton){
+            initUserPosition();
+        }
+        Transform3D rot = new Transform3D();
+        rot.rotY(angle);
+
+        for (int i = 0; i < numOfCyl+1; i++)
+            rotCyl.get(i).setTransform(rot);
+
     }
 
 }

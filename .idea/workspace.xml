@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c1a41b83-1d09-47eb-abfe-ab797919a7b5" name="Changes" comment="Renamed files, some classes, functions and variables. Added textures for cylinders. Added rotation, but not relative to the desired axis.">
+    <list default="true" id="c1a41b83-1d09-47eb-abfe-ab797919a7b5" name="Changes" comment="Initial commit">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/SafeUniverse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/SafeUniverse.java" afterDir="false" />
     </list>
@@ -23,7 +23,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="workInProgress" />
+        <entry key="$PROJECT_DIR$" value="main" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -46,7 +46,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "X:/Java3D-master",
+    "last_opened_file_path": "G:/Inne komputery/Mój komputer/sem 4/Programowanie obiektowe i grafika komputerowa/Laboratorium5/lab05-swiatla3D",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -99,6 +99,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue="Application.SafeLock" />
+      <item itemvalue="Application.CuboRobotV02" />
+      <item itemvalue="Application.ExtendedSimpleAnimation3d" />
+      <item itemvalue="Application.SafeLock3D" />
+      <item itemvalue="Application.TischClass" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.SafeLock3D" />
@@ -134,14 +141,7 @@
       <option name="project" value="LOCAL" />
       <updated>1653648943747</updated>
     </task>
-    <task id="LOCAL-00003" summary="Renamed files, some classes, functions and variables. Added textures for cylinders. Added rotation, but not relative to the desired axis.">
-      <created>1653841256774</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1653841256774</updated>
-    </task>
-    <option name="localTasksCounter" value="4" />
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -163,7 +163,6 @@
     <MESSAGE value="Initial commit" />
     <MESSAGE value="Initial commit v2.0" />
     <MESSAGE value="Example project" />
-    <MESSAGE value="Renamed files, some classes, functions and variables. Added textures for cylinders. Added rotation, but not relative to the desired axis." />
-    <option name="LAST_COMMIT_MESSAGE" value="Renamed files, some classes, functions and variables. Added textures for cylinders. Added rotation, but not relative to the desired axis." />
+    <option name="LAST_COMMIT_MESSAGE" value="Example project" />
   </component>
 </project>
