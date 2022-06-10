@@ -37,10 +37,16 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
     private final Button startButton = new Button("Run");
     private final Button stopButton = new Button("Stop");
     private final Button setDefaultViewButton = new Button("Default View");
-    private final ArrayList<TransformGroup>rotCyl = new ArrayList<>();
-    private ArrayList<Integer> decodingKey = new ArrayList<Integer>();
     private boolean latchLeft = false;
     private boolean latchRight = false;
+
+    private final ArrayList<TransformGroup>rotCyl = new ArrayList<>();
+    private ArrayList<Integer> decodingKey = new ArrayList<>();
+    private ArrayList<Integer> stepsKey = new ArrayList<>();
+    private int whatCyl = 0;
+    private int stepNum = 0;
+    private boolean clockwiseDir;
+    private boolean nextCyl;
 
     // parameters of cylinders
     int numOfCyl = 5;
@@ -249,8 +255,9 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
 
             cylinders.get(i).addChild(lineTransform);
         }
+
         // filling list of decoding key for cylinders
-        for( int i = 0; i < numOfCyl; i++)
+        for(int i = 0; i < numOfCyl; i++)
             decodingKey.add(randomInt());
 
         // creating transformations of self rotation for cylinders
@@ -264,11 +271,9 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
             tmp_rot.rotY(-decodingKey.get(i)*Math.PI/5);
             selfRotCyl.add(tmp_rot);
         }
+
         // filling last of theirs self rotation by empty transform
         selfRotCyl.add(new Transform3D());
-
-        for( int i = 0; i < numOfCyl; i++)
-            System.out.println(decodingKey.get(i));
 
         // creating transformations of position for cylinders
         ArrayList<Transform3D>posCyl = new ArrayList<>();
@@ -298,20 +303,18 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
             TransformGroup n = new TransformGroup();
             rotCyl.add(n);
         }
-        //
+
+        // matching transformation groups of self rotation
         ArrayList<TransformGroup>tgSelfRot = new ArrayList<>();
         for (int i = 0; i <= numOfCyl+1; i++){
             TransformGroup k = new TransformGroup(selfRotCyl.get(i));
             tgSelfRot.add(k);
         }
 
-
         // rotation transformation
         Transform3D tmp_rot = new Transform3D();
         tmp_rot.rotX(Math.PI/2);
         TransformGroup tg_rot = new TransformGroup(tmp_rot);
-
-
 
         // matching transformation groups with rotation
         for (int i = 0; i <= numOfCyl+1; i++){
@@ -325,8 +328,12 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
         // adding rotation to scene
         sceneBG.addChild(tg_rot);
     }
+
+
     public int randomInt() {
-        return ((int) (Math.random()*10));
+        int i = (int)(Math.random()*10);
+        i = (i == 0) ? randomInt() : i;
+        return (i);
     }
 
     @Override
@@ -334,8 +341,10 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
         switch (e.getKeyCode()){
             case KeyEvent.VK_LEFT:
                 leftButton = true;
+                break;
             case KeyEvent.VK_RIGHT:
                 rightButton = true;
+                break;
         }
     }
 
@@ -344,8 +353,10 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
         switch (e.getKeyCode()){
             case KeyEvent.VK_LEFT:
                 leftButton = false;
+                break;
             case KeyEvent.VK_RIGHT:
                 rightButton = false;
+                break;
         }
     }
 
@@ -365,27 +376,120 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
         if(e.getSource() == setDefaultViewButton)
             initUserPosition();
 
-        if(leftButton)
+        if(whatCyl <= numOfCyl)
+            setAngle();
+    }
+
+
+    private void setAngle() {
+        if(leftButton) {
+            if(whatCyl == 0) {
+                clockwiseDir = false;
+                setStepsNum();
+                whatCyl++;
+            }
+
             latchLeft = true;
+        }
         else if(latchLeft) {
-            angle += Math.PI/5;
+            if(nextCyl) {
+                if(!clockwiseDir) {
+                    whatCyl++;
+                    angle = 0;
+                    stepNum = 0;
+                }
+                else
+                    clockwiseDir = !clockwiseDir;
+
+                nextCyl = false;
+            }
+
+            if (!clockwiseDir) {
+                angle += Math.PI/5;
+                rotateCyl();
+                checkKey();
+            }
+
             latchLeft = false;
         }
-        else if(rightButton)
+
+        if (rightButton) {
+            if(whatCyl == 0) {
+                clockwiseDir = true;
+                setStepsNum();
+                whatCyl++;
+            }
+
             latchRight = true;
+        }
         else if(latchRight) {
-            angle -= Math.PI/5;
+            if(nextCyl) {
+                if(clockwiseDir) {
+                    whatCyl++;
+                    angle = 0;
+                    stepNum = 0;
+                }
+                else
+                    clockwiseDir = !clockwiseDir;
+
+                nextCyl = false;
+            }
+
+            if (clockwiseDir) {
+                angle -= Math.PI/5;
+                rotateCyl();
+                checkKey();
+            }
+
             latchRight = false;
         }
+    }
 
-        if(!latchLeft && !latchRight) {
-            Transform3D rot = new Transform3D();
-            rot.rotY(angle);
 
-            for (int i = 0; i <= numOfCyl+1; i++)
-                rotCyl.get(i).setTransform(rot);
+    private void setStepsNum() {
+        if(clockwiseDir) {
+            for(int i = 0; i < numOfCyl; i++)
+                if(i % 2 == 0)
+                    stepsKey.add(10-decodingKey.get(i));
+                else
+                    stepsKey.add(decodingKey.get(i));
         }
+        else {
+            for(int i = 0; i < numOfCyl; i++)
+                if(i % 2 == 0)
+                    stepsKey.add(decodingKey.get(i));
+                else
+                    stepsKey.add(10-decodingKey.get(i));
+        }
+    }
 
+
+    private void rotateCyl() {
+        Transform3D rot = new Transform3D();
+        rot.rotY(angle);
+
+        rotCyl.get(0).setTransform(rot);
+        rotCyl.get(whatCyl).setTransform(rot);
+
+        stepNum++;
+    }
+
+
+    private void checkKey() {
+        if(whatCyl != 0 && whatCyl <= numOfCyl) {
+            if(stepNum == stepsKey.get(whatCyl-1)) {
+                nextCyl = true;
+                clockwiseDir = !clockwiseDir;
+            }
+            else {
+                if(stepNum == 10) {
+                    stepNum = 0;
+                    angle = 0;
+                }
+
+                nextCyl = false;
+            }
+        }
     }
 
 }
