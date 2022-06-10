@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import com.sun.j3d.utils.geometry.Box;
 import com.sun.j3d.utils.image.TextureLoader;
@@ -36,8 +37,8 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
     private final Button startButton = new Button("Run");
     private final Button stopButton = new Button("Stop");
     private final Button setDefaultViewButton = new Button("Default View");
-
     private final ArrayList<TransformGroup>rotCyl = new ArrayList<>();
+    private ArrayList<Integer> decodingKey = new ArrayList<Integer>();
     private boolean latchLeft = false;
     private boolean latchRight = false;
 
@@ -248,6 +249,26 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
 
             cylinders.get(i).addChild(lineTransform);
         }
+        // filling list of decoding key for cylinders
+        for( int i = 0; i < numOfCyl; i++)
+            decodingKey.add(randomInt());
+
+        // creating transformations of self rotation for cylinders
+        ArrayList<Transform3D>selfRotCyl = new ArrayList<>();
+        // filling first of theirs self rotation by empty transform
+        selfRotCyl.add(new Transform3D());
+
+        // initializing random rotation for cylinders
+        for (int i = 0; i < numOfCyl; i++){
+            Transform3D tmp_rot = new Transform3D();
+            tmp_rot.rotY(-decodingKey.get(i)*Math.PI/5);
+            selfRotCyl.add(tmp_rot);
+        }
+        // filling last of theirs self rotation by empty transform
+        selfRotCyl.add(new Transform3D());
+
+        for( int i = 0; i < numOfCyl; i++)
+            System.out.println(decodingKey.get(i));
 
         // creating transformations of position for cylinders
         ArrayList<Transform3D>posCyl = new ArrayList<>();
@@ -277,22 +298,35 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
             TransformGroup n = new TransformGroup();
             rotCyl.add(n);
         }
+        //
+        ArrayList<TransformGroup>tgSelfRot = new ArrayList<>();
+        for (int i = 0; i <= numOfCyl+1; i++){
+            TransformGroup k = new TransformGroup(selfRotCyl.get(i));
+            tgSelfRot.add(k);
+        }
+
 
         // rotation transformation
         Transform3D tmp_rot = new Transform3D();
         tmp_rot.rotX(Math.PI/2);
         TransformGroup tg_rot = new TransformGroup(tmp_rot);
 
+
+
         // matching transformation groups with rotation
         for (int i = 0; i <= numOfCyl+1; i++){
             rotCyl.get(i).setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
-            rotCyl.get(i).addChild(cylinders.get(i));
+            tgSelfRot.get(i).addChild(cylinders.get(i));
+            rotCyl.get(i).addChild(tgSelfRot.get(i));
             tg.get(i).addChild(rotCyl.get(i));
             tg_rot.addChild(tg.get(i));
         }
 
         // adding rotation to scene
         sceneBG.addChild(tg_rot);
+    }
+    public int randomInt() {
+        return ((int) (Math.random()*10));
     }
 
     @Override

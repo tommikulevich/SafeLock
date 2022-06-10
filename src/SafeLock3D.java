@@ -17,7 +17,7 @@ public class SafeLock3D extends JFrame
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         pack();
-        setResizable(false);                // fixed size display
+        setResizable(true);                // fixed size display
         setVisible(true);
     }
 
