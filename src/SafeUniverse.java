@@ -42,6 +42,8 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
     private boolean latchLeft = false;
     private boolean latchRight = false;
 
+    private int gameEnded = 0;
+
     private final ArrayList<TransformGroup>rotCyl = new ArrayList<>();
     private ArrayList<Integer> decodingKey = new ArrayList<>();
     private ArrayList<Integer> stepsKey = new ArrayList<>();
@@ -61,8 +63,12 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
     float cylH = 0.5f;
     float axRad = 0.1f;
     int posOfFirstCyl = 2;
+    int posOfLastCyl = 0;
     float angle = 0;
 
+    // parameters of winning box
+
+    float wBoxHeight = 0.75f;
 
     public SafeUniverse()
     // A panel holding a 3D canvas
@@ -120,7 +126,10 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
         sceneBG.addChild(new SafePlatform().getBG());   // adding the floor
         addSounds();                                    // adding the sounds
 
-        floatingCylinders();    // adding some floating cylinders
+        floatingCylinders();    // adding floating cylinders
+        createWinningBox();     // it is required to add winningBox
+        // after floatingCylinders because they are setting some of
+        // params for the box.
 
         sceneBG.compile();      // fixing the scene
     }
@@ -318,7 +327,7 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
         ArrayList<Transform3D>posCyl = new ArrayList<>();
 
         //setting this transformation by position algorithm
-        int posOfLastCyl = posOfFirstCyl;
+        posOfLastCyl = posOfFirstCyl;
         for (int i = 0; i <= numOfCyl; i++, posOfLastCyl--){
             Transform3D k = new Transform3D();
             k.set(new Vector3f(0, disBetCyl*posOfLastCyl, -vertPos));
@@ -366,6 +375,28 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
 
         // adding rotation to scene
         sceneBG.addChild(tg_rot);
+    }
+    public void createWinningBox(){
+        Appearance woodStyle = new Appearance();
+        TextureLoader loader = new TextureLoader("img/wood.png", null);
+        ImageComponent2D image = loader.getImage();
+
+        Texture2D wood = new Texture2D(Texture.BASE_LEVEL, Texture.RGBA, image.getWidth(), image.getHeight());
+        wood.setImage(0, image);
+        wood.setBoundaryModeS(Texture.WRAP);
+        wood.setBoundaryModeT(Texture.WRAP);
+
+        woodStyle.setTexture(wood);
+
+        Box winningBox = new Box(axRad, wBoxHeight, disBetCyl*(posOfFirstCyl-posOfLastCyl-1)/2, woodStyle);
+
+        Transform3D initPos = new Transform3D();
+        initPos.set(new Vector3f(0f, vertPos + cylRad*1.5f + (wBoxHeight), (disBetCyl*(posOfFirstCyl+posOfLastCyl+1)/2) - cylH/2));
+
+        TransformGroup moveBox = new TransformGroup(initPos);
+        moveBox.addChild(winningBox);
+
+        sceneBG.addChild(moveBox);
     }
 
 
@@ -417,6 +448,14 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
 
         if(whatCyl != numOfCyl || !nextCyl)
             setAngle();
+        else if(gameEnded == 0)
+            gameEnded = 1;
+
+        if(gameEnded == 1) {
+            System.out.println("You are a ...... WINNER :)");
+            gameEnded = 2;
+        }
+
     }
 
 
@@ -468,8 +507,9 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
                     angle = 0;
                     stepNum = 0;
                 }
-                else
+                else {
                     clockwiseDir = !clockwiseDir;
+                }
 
                 nextCyl = false;
             }
@@ -482,6 +522,7 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
 
             latchRight = false;
         }
+
     }
 
 
