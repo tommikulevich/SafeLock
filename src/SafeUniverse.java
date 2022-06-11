@@ -56,7 +56,7 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
     PointSound tickNext = new PointSound();
 
     // parameters of cylinders
-    int numOfCyl = 5;
+    int numOfCyl = 1;
     float disBetCyl = 1.0f;
     float vertPos = 3.0f;
     float cylRad = 1.5f;
@@ -66,8 +66,9 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
     int posOfLastCyl = 0;
     float angle = 0;
 
-    // parameters of winning box
-
+    // winning box and parameters
+    private Box winningBox = new Box();
+    private TransformGroup initBoxPosSetter = new TransformGroup();
     float wBoxHeight = 0.75f;
 
     public SafeUniverse()
@@ -388,15 +389,15 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
 
         woodStyle.setTexture(wood);
 
-        Box winningBox = new Box(axRad, wBoxHeight, disBetCyl*(posOfFirstCyl-posOfLastCyl-1)/2, woodStyle);
+        winningBox = new Box(axRad, wBoxHeight, disBetCyl*(posOfFirstCyl-posOfLastCyl-1)/2, woodStyle);
 
         Transform3D initPos = new Transform3D();
         initPos.set(new Vector3f(0f, vertPos + cylRad*1.5f + (wBoxHeight), (disBetCyl*(posOfFirstCyl+posOfLastCyl+1)/2) - cylH/2));
 
-        TransformGroup moveBox = new TransformGroup(initPos);
-        moveBox.addChild(winningBox);
+        initBoxPosSetter.setTransform(initPos);
+        initBoxPosSetter.addChild(winningBox);
 
-        sceneBG.addChild(moveBox);
+        sceneBG.addChild(initBoxPosSetter);
     }
 
 
@@ -453,6 +454,24 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
 
         if(gameEnded == 1) {
             System.out.println("You are a ...... WINNER :)");
+            //Box animation
+            Alpha winningBoxAlpha = new Alpha(1,Alpha.INCREASING_ENABLE, 0, 0, 2000, 300, 1000000, 0, 0, 0);
+
+            Transform3D boxMoveAxis = new Transform3D();
+            boxMoveAxis.rotZ(Math.PI);
+
+            PositionInterpolator boxMover = new PositionInterpolator(winningBoxAlpha, initBoxPosSetter, boxMoveAxis, 0.0f, 1.0f);
+            BoundingSphere bounds = new BoundingSphere(new Point3d(0.0,0.0,0.0),Double.MAX_VALUE);
+            boxMover.setSchedulingBounds(bounds);
+
+            TransformGroup boxMoverHolder = new TransformGroup();
+            boxMoverHolder.addChild(boxMover);
+
+            BranchGroup newBG = new BranchGroup();
+            newBG.addChild(boxMoverHolder);
+
+            su.addBranchGraph(newBG);
+            //End of box animation
             gameEnded = 2;
         }
 

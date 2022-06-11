@@ -197,4 +197,14 @@
     <MESSAGE value="Added mechanism of alternating rotation of cylinders (without history of steps), so our program starts to look like a game. Small changes and code optimizations." />
     <option name="LAST_COMMIT_MESSAGE" value="Added mechanism of alternating rotation of cylinders (without history of steps), so our program starts to look like a game. Small changes and code optimizations." />
   </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="javax.media.j3d.RestrictedAccessException" package="javax.media.j3d" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
 </project>
