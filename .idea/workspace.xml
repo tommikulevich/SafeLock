@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c1a41b83-1d09-47eb-abfe-ab797919a7b5" name="Changes" comment="Rearranged cylinders in array. Added latch (pl. &quot;zatrzask&quot;) when rotating cylinders. Small changes in code.">
+    <list default="true" id="c1a41b83-1d09-47eb-abfe-ab797919a7b5" name="Changes" comment="Added mechanism of alternating rotation of cylinders (without history of steps), so our program starts to look like a game. Small changes and code optimizations.">
+      <change afterPath="$PROJECT_DIR$/audio/laser.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/audio/tick.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/audio/tickNext.wav" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/SafeUniverse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/SafeUniverse.java" afterDir="false" />
     </list>
@@ -58,6 +61,7 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="X:\Politechnika\Projekty\POiGK-Project\audio" />
       <recent name="X:\Politechnika\Projekty\POiGK-Project\SafeLock\src" />
       <recent name="X:\Politechnika\Projekty\POiGK-Project\SafeLock\lib" />
       <recent name="X:\Politechnika\Projekty\POiGK-Project\SafeLock" />
@@ -162,7 +166,14 @@
       <option name="project" value="LOCAL" />
       <updated>1654452397842</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Added mechanism of alternating rotation of cylinders (without history of steps), so our program starts to look like a game. Small changes and code optimizations.">
+      <created>1654897163601</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1654897163601</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -186,6 +197,7 @@
     <MESSAGE value="Example project" />
     <MESSAGE value="StopButton has new functionality following its name. New setDefaultViewButton was added, but doesn't have working functionality yet. The overview of the user window has been changed." />
     <MESSAGE value="Added lines on cylinders. Changed textures" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added lines on cylinders. Changed textures" />
+    <MESSAGE value="Added mechanism of alternating rotation of cylinders (without history of steps), so our program starts to look like a game. Small changes and code optimizations." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added mechanism of alternating rotation of cylinders (without history of steps), so our program starts to look like a game. Small changes and code optimizations." />
   </component>
 </project>

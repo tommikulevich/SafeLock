@@ -7,6 +7,8 @@ import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import com.sun.j3d.audioengines.javasound.JavaSoundMixer;
+import com.sun.j3d.utils.behaviors.keyboard.KeyNavigatorBehavior;
 import com.sun.j3d.utils.geometry.Box;
 import com.sun.j3d.utils.image.TextureLoader;
 import com.sun.j3d.utils.universe.*;
@@ -47,6 +49,9 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
     private int stepNum = 0;
     private boolean clockwiseDir;
     private boolean nextCyl;
+
+    PointSound tick = new PointSound();
+    PointSound tickNext = new PointSound();
 
     // parameters of cylinders
     int numOfCyl = 5;
@@ -96,6 +101,10 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
         initUserPosition();        // setting user's viewpoint
         orbitControls(canvas3D);   // controlling the movement of the viewpoint
 
+        // create a sounds mixer to use our sounds with and initialise it
+        JavaSoundMixer myMixer = new JavaSoundMixer(su.getViewer().getPhysicalEnvironment());
+        myMixer.initialize();
+
         su.addBranchGraph(sceneBG);
     }
 
@@ -109,6 +118,7 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
         lightScene();                                   // adding the lights
         addBackground();                                // adding the sky
         sceneBG.addChild(new SafePlatform().getBG());   // adding the floor
+        addSounds();                                    // adding the sounds
 
         floatingCylinders();    // adding some floating cylinders
 
@@ -148,6 +158,35 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
         back.setColor(0.17f, 0.65f, 0.92f);    // sky colour
 
         sceneBG.addChild(back);
+    }
+
+
+    private void addSounds() {
+        // create the media container to load the sound
+        MediaContainer soundContainer = new MediaContainer("file:./audio/laser.wav");
+        Vector3f objPosition = new Vector3f();
+
+        // use the loaded data in the sound
+        tick.setSoundData(soundContainer);
+        tick.setInitialGain(1.0f);
+        tick.setPosition(new Point3f(objPosition));
+
+        // allow use to switch the sound on and off
+        tick.setCapability(PointSound.ALLOW_ENABLE_READ);
+        tick.setCapability(PointSound.ALLOW_ENABLE_WRITE);
+        tick.setSchedulingBounds(new BoundingSphere(new Point3d(0.0, 0.0, 0.0), 1000.0));
+
+        // set it off to start with
+        tick.setEnable(false);
+
+        // set it to loop forever
+        //tick.setLoop(BackgroundSound.INFINITE_LOOPS);
+
+        // use the edge value to set to extent of the sound
+        Point2f[] attenuation = { new Point2f(0.0f, 1.0f), new Point2f(1000.0f, 0.1f) };
+        tick.setDistanceGain(attenuation);
+
+        sceneBG.addChild(tick);
     }
 
 
@@ -376,7 +415,7 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
         if(e.getSource() == setDefaultViewButton)
             initUserPosition();
 
-        if(whatCyl <= numOfCyl)
+        if(whatCyl != numOfCyl || !nextCyl)
             setAngle();
     }
 
@@ -480,14 +519,18 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
             if(stepNum == stepsKey.get(whatCyl-1)) {
                 nextCyl = true;
                 clockwiseDir = !clockwiseDir;
+
+                tick.setEnable(true);
             }
             else {
+                nextCyl = false;
+
                 if(stepNum == 10) {
                     stepNum = 0;
                     angle = 0;
                 }
 
-                nextCyl = false;
+                tick.setEnable(false);
             }
         }
     }
