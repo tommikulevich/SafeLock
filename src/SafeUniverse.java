@@ -42,8 +42,6 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
     private boolean latchLeft = false;
     private boolean latchRight = false;
 
-    private int gameEnded = 0;
-
     private final ArrayList<TransformGroup>rotCyl = new ArrayList<>();
     private ArrayList<Integer> decodingKey = new ArrayList<>();
     private ArrayList<Integer> stepsKey = new ArrayList<>();
@@ -70,6 +68,9 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
     private Box winningBox = new Box();
     private TransformGroup initBoxPosSetter = new TransformGroup();
     float wBoxHeight = 0.75f;
+
+    private boolean gameEnded = false;
+
 
     public SafeUniverse()
     // A panel holding a 3D canvas
@@ -392,8 +393,9 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
         winningBox = new Box(axRad, wBoxHeight, disBetCyl*(posOfFirstCyl-posOfLastCyl-1)/2, woodStyle);
 
         Transform3D initPos = new Transform3D();
-        initPos.set(new Vector3f(0f, vertPos + cylRad*1.5f + (wBoxHeight), (disBetCyl*(posOfFirstCyl+posOfLastCyl+1)/2) - cylH/2));
+        initPos.set(new Vector3f(0.0f, vertPos+cylRad*1.5f+wBoxHeight, (disBetCyl*(posOfFirstCyl+posOfLastCyl+1)/2)-cylH/2));
 
+        initBoxPosSetter.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
         initBoxPosSetter.setTransform(initPos);
         initBoxPosSetter.addChild(winningBox);
 
@@ -449,19 +451,21 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
 
         if(whatCyl != numOfCyl || !nextCyl)
             setAngle();
-        else if(gameEnded == 0)
-            gameEnded = 1;
+        else {
+            gameEnded = true;
+            nextCyl = false;
+        }
 
-        if(gameEnded == 1) {
-            System.out.println("You are a ...... WINNER :)");
-            //Box animation
-            Alpha winningBoxAlpha = new Alpha(1,Alpha.INCREASING_ENABLE, 0, 0, 2000, 300, 1000000, 0, 0, 0);
+        // Box animation
+        if(gameEnded) {
+            Alpha winningBoxAlpha = new Alpha();
+            //winningBoxAlpha.setLoopCount(1);
 
             Transform3D boxMoveAxis = new Transform3D();
-            boxMoveAxis.rotZ(Math.PI);
+            boxMoveAxis.rotZ(Math.PI/2);
 
-            PositionInterpolator boxMover = new PositionInterpolator(winningBoxAlpha, initBoxPosSetter, boxMoveAxis, 0.0f, 1.0f);
-            BoundingSphere bounds = new BoundingSphere(new Point3d(0.0,0.0,0.0),Double.MAX_VALUE);
+            PositionInterpolator boxMover = new PositionInterpolator(winningBoxAlpha, initBoxPosSetter, boxMoveAxis, 0.0f, 2.0f);
+            BoundingSphere bounds = new BoundingSphere(new Point3d(0.0,0.0,0.0), Double.MAX_VALUE);
             boxMover.setSchedulingBounds(bounds);
 
             TransformGroup boxMoverHolder = new TransformGroup();
@@ -471,8 +475,9 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
             newBG.addChild(boxMoverHolder);
 
             su.addBranchGraph(newBG);
-            //End of box animation
-            gameEnded = 2;
+
+            // end of box animation
+            gameEnded = false;
         }
 
     }
