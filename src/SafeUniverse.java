@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -30,9 +31,14 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
 
     private final SimpleUniverse su;
     private BranchGroup sceneBG;
-    private BoundingSphere bounds;   // for environment nodes
+    private BoundingSphere bounds;
     private final ViewingPlatform vp;
     private final TransformGroup steerTG;
+
+    private String fileTick = "tick.wav";
+    private String fileTickNext = "tickNext.wav";
+    private PointSound tick = new PointSound();
+    private PointSound tickNext = new PointSound();
 
     private final Timer clock1;
     private boolean leftButton = false, rightButton = false;
@@ -42,34 +48,33 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
     private boolean latchLeft = false;
     private boolean latchRight = false;
 
-    private int gameEnded = 0;
-
     private final ArrayList<TransformGroup>rotCyl = new ArrayList<>();
+
+    // game parameters
     private ArrayList<Integer> decodingKey = new ArrayList<>();
     private ArrayList<Integer> stepsKey = new ArrayList<>();
+    private ArrayList<Integer> password = new ArrayList<>();
     private int whatCyl = 0;
     private int stepNum = 0;
+    private int gameEnded = 0;
     private boolean clockwiseDir;
     private boolean nextCyl;
 
-    PointSound tick = new PointSound();
-    PointSound tickNext = new PointSound();
-
     // parameters of cylinders
-    int numOfCyl = 1;
-    float disBetCyl = 1.0f;
-    float vertPos = 3.0f;
-    float cylRad = 1.5f;
-    float cylH = 0.5f;
-    float axRad = 0.1f;
-    int posOfFirstCyl = 2;
-    int posOfLastCyl = 0;
-    float angle = 0;
+    private int numOfCyl = 5;
+    private float disBetCyl = 1.0f;
+    private float vertPos = 3.0f;
+    private float cylRad = 1.5f;
+    private float cylH = 0.5f;
+    private float axRad = 0.1f;
+    private int posOfFirstCyl = 2;
+    private int posOfLastCyl = 0;
+    private float angle = 0;
+    private float angleMain = 0;
 
-    // winning box and parameters
-    private Box winningBox = new Box();
-    private TransformGroup initBoxPosSetter = new TransformGroup();
+    // parameters of winning box
     float wBoxHeight = 0.75f;
+
 
     public SafeUniverse()
     // A panel holding a 3D canvas
@@ -125,12 +130,11 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
         lightScene();                                   // adding the lights
         addBackground();                                // adding the sky
         sceneBG.addChild(new SafePlatform().getBG());   // adding the floor
-        addSounds();                                    // adding the sounds
+        addSounds(tick, fileTick);                      // adding the sounds
+        addSounds(tickNext, fileTickNext);
 
         floatingCylinders();    // adding floating cylinders
         createWinningBox();     // it is required to add winningBox
-        // after floatingCylinders because they are setting some of
-        // params for the box.
 
         sceneBG.compile();      // fixing the scene
     }
@@ -171,32 +175,31 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
     }
 
 
-    private void addSounds() {
+    private void addSounds(PointSound sound, String filename)
+    // Adding sounds
+    {
         // create the media container to load the sound
-        MediaContainer soundContainer = new MediaContainer("file:./audio/laser.wav");
+        MediaContainer soundContainer = new MediaContainer("file:audio/" + filename);
         Vector3f objPosition = new Vector3f();
 
         // use the loaded data in the sound
-        tick.setSoundData(soundContainer);
-        tick.setInitialGain(1.0f);
-        tick.setPosition(new Point3f(objPosition));
+        sound.setSoundData(soundContainer);
+        sound.setInitialGain(1.0f);
+        sound.setPosition(new Point3f(objPosition));
 
         // allow use to switch the sound on and off
-        tick.setCapability(PointSound.ALLOW_ENABLE_READ);
-        tick.setCapability(PointSound.ALLOW_ENABLE_WRITE);
-        tick.setSchedulingBounds(new BoundingSphere(new Point3d(0.0, 0.0, 0.0), 1000.0));
+        sound.setCapability(PointSound.ALLOW_ENABLE_READ);
+        sound.setCapability(PointSound.ALLOW_ENABLE_WRITE);
+        sound.setSchedulingBounds(new BoundingSphere(new Point3d(0.0, 0.0, 0.0), 1000.0));
 
         // set it off to start with
-        tick.setEnable(false);
-
-        // set it to loop forever
-        //tick.setLoop(BackgroundSound.INFINITE_LOOPS);
+        sound.setEnable(false);
 
         // use the edge value to set to extent of the sound
         Point2f[] attenuation = { new Point2f(0.0f, 1.0f), new Point2f(1000.0f, 0.1f) };
-        tick.setDistanceGain(attenuation);
+        sound.setDistanceGain(attenuation);
 
-        sceneBG.addChild(tick);
+        sceneBG.addChild(sound);
     }
 
 
@@ -224,9 +227,9 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
         steerTG.setTransform(t3d);
     }
 
-    // ---------------------- Floating cylinders -----------------
 
     public void floatingCylinders()
+    // Creating floating cylinders
     {
         // loading textures
         Appearance woodStyle = new Appearance();
@@ -309,6 +312,17 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
         for(int i = 0; i < numOfCyl; i++)
             decodingKey.add(randomInt());
 
+        // filling list of password
+        int temp = decodingKey.get(0);
+        password.add(temp);
+        for(int i = 1; i < numOfCyl; i++) {
+            temp = (temp + decodingKey.get(i)) % 10;
+            password.add(temp);
+        }
+
+        for(int i = 0; i < numOfCyl; i++)
+            System.out.println(password.get(i));
+
         // creating transformations of self rotation for cylinders
         ArrayList<Transform3D>selfRotCyl = new ArrayList<>();
         // filling first of theirs self rotation by empty transform
@@ -377,7 +391,11 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
         // adding rotation to scene
         sceneBG.addChild(tg_rot);
     }
-    public void createWinningBox(){
+
+
+    public void createWinningBox()
+    // Creating a winning box
+    {
         Appearance woodStyle = new Appearance();
         TextureLoader loader = new TextureLoader("img/wood.png", null);
         ImageComponent2D image = loader.getImage();
@@ -389,21 +407,24 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
 
         woodStyle.setTexture(wood);
 
-        winningBox = new Box(axRad, wBoxHeight, disBetCyl*(posOfFirstCyl-posOfLastCyl-1)/2, woodStyle);
+        Box winningBox = new Box(axRad, wBoxHeight, disBetCyl*(posOfFirstCyl-posOfLastCyl-1)/2, woodStyle);
 
         Transform3D initPos = new Transform3D();
-        initPos.set(new Vector3f(0f, vertPos + cylRad*1.5f + (wBoxHeight), (disBetCyl*(posOfFirstCyl+posOfLastCyl+1)/2) - cylH/2));
+        initPos.set(new Vector3f(0f, vertPos+cylRad*1.5f+(wBoxHeight), (disBetCyl*(posOfFirstCyl+posOfLastCyl+1)/2) - cylH/2));
 
-        initBoxPosSetter.setTransform(initPos);
-        initBoxPosSetter.addChild(winningBox);
+        TransformGroup moveBox = new TransformGroup(initPos);
+        moveBox.addChild(winningBox);
 
-        sceneBG.addChild(initBoxPosSetter);
+        sceneBG.addChild(moveBox);
     }
 
 
-    public int randomInt() {
+    public int randomInt()
+    // Generator of numbers from 1 to 9
+    {
         int i = (int)(Math.random()*10);
         i = (i == 0) ? randomInt() : i;
+
         return (i);
     }
 
@@ -440,47 +461,42 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
         if(e.getSource() == startButton)
             if(!clock1.isRunning())
                 clock1.start();
-        else if(e.getSource() == stopButton)
-            if(clock1.isRunning())
-                clock1.stop();
+            else if(e.getSource() == stopButton)
+                if(clock1.isRunning())
+                    clock1.stop();
 
         if(e.getSource() == setDefaultViewButton)
             initUserPosition();
 
-        if(whatCyl != numOfCyl || !nextCyl)
-            setAngle();
-        else if(gameEnded == 0)
-            gameEnded = 1;
+        if(gameEnded == 0 && (whatCyl != numOfCyl || !nextCyl))     // in other words: if the user has not reached the situation
+            setAngle();                                             // when he turns the last cylinder, which is located in the correct position
+        else if (gameEnded == 1)
+            gameEnded = 2;
 
         if(gameEnded == 1) {
             System.out.println("You are a ...... WINNER :)");
-            //Box animation
-            Alpha winningBoxAlpha = new Alpha(1,Alpha.INCREASING_ENABLE, 0, 0, 2000, 300, 1000000, 0, 0, 0);
-
-            Transform3D boxMoveAxis = new Transform3D();
-            boxMoveAxis.rotZ(Math.PI);
-
-            PositionInterpolator boxMover = new PositionInterpolator(winningBoxAlpha, initBoxPosSetter, boxMoveAxis, 0.0f, 1.0f);
-            BoundingSphere bounds = new BoundingSphere(new Point3d(0.0,0.0,0.0),Double.MAX_VALUE);
-            boxMover.setSchedulingBounds(bounds);
-
-            TransformGroup boxMoverHolder = new TransformGroup();
-            boxMoverHolder.addChild(boxMover);
-
-            BranchGroup newBG = new BranchGroup();
-            newBG.addChild(boxMoverHolder);
-
-            su.addBranchGraph(newBG);
-            //End of box animation
             gameEnded = 2;
         }
 
+
+        if(gameEnded == 0)
+            if(whatCyl != numOfCyl || !nextCyl)         // in other words: if the user has not reached the situation
+                setAngle();                             // when he turns the last cylinder, which is located in the correct position
+            else
+                gameEnded = 1;
+
+        if(gameEnded == 1) {
+            System.out.println("You are a ...... WINNER :)");
+            gameEnded = 2;
+        }
     }
 
 
-    private void setAngle() {
+    private void setAngle()
+    // Initialize the rotation of the cylinders depending on the pressed button
+    {
         if(leftButton) {
-            if(whatCyl == 0) {
+            if(whatCyl == 0) {                          // if the user started by rotating to the left
                 clockwiseDir = false;
                 setStepsNum();
                 whatCyl++;
@@ -489,19 +505,20 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
             latchLeft = true;
         }
         else if(latchLeft) {
-            if(nextCyl) {
-                if(!clockwiseDir) {
+            if(nextCyl) {                               // if the user can rotate the next cylinder ...
+                if(!clockwiseDir) {                     // ... and he rotates in the right direction
                     whatCyl++;
                     angle = 0;
                     stepNum = 0;
                 }
-                else
-                    clockwiseDir = !clockwiseDir;
+                else                                    // if he continued to rotate in the same direction as before ...
+                    clockwiseDir = !clockwiseDir;       // ... the rotating side changes and he forced to rotate further in that direction
 
                 nextCyl = false;
             }
 
-            if (!clockwiseDir) {
+            if (!clockwiseDir) {                        // if the user rotates to the left (so he can't rotates to the right)
+                angleMain += Math.PI/5;
                 angle += Math.PI/5;
                 rotateCyl();
                 checkKey();
@@ -511,7 +528,7 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
         }
 
         if (rightButton) {
-            if(whatCyl == 0) {
+            if(whatCyl == 0) {                          // if the user started by rotating to the right
                 clockwiseDir = true;
                 setStepsNum();
                 whatCyl++;
@@ -520,20 +537,20 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
             latchRight = true;
         }
         else if(latchRight) {
-            if(nextCyl) {
-                if(clockwiseDir) {
+            if(nextCyl) {                               // if the user can rotate the next cylinder ...
+                if(clockwiseDir) {                      // ... and he rotates in the right direction
                     whatCyl++;
                     angle = 0;
                     stepNum = 0;
                 }
-                else {
-                    clockwiseDir = !clockwiseDir;
-                }
+                else                                    // if he continued to rotate in the same direction as before ...
+                    clockwiseDir = !clockwiseDir;       // ... the rotating side changes and he forced to rotate further in that direction
 
                 nextCyl = false;
             }
 
-            if (clockwiseDir) {
+            if (clockwiseDir) {                             // if the user rotates to the right (so he can't rotates to the left)
+                angleMain -= Math.PI/5;
                 angle -= Math.PI/5;
                 rotateCyl();
                 checkKey();
@@ -541,19 +558,20 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
 
             latchRight = false;
         }
-
     }
 
 
-    private void setStepsNum() {
-        if(clockwiseDir) {
+    private void setStepsNum()
+    // Calculates how many steps the user needs to take in order for the position of this cylinder to be correct
+    {
+        if(clockwiseDir) {                                  // if the user makes a turn to the right side at the beginning of the game
             for(int i = 0; i < numOfCyl; i++)
                 if(i % 2 == 0)
                     stepsKey.add(10-decodingKey.get(i));
                 else
                     stepsKey.add(decodingKey.get(i));
         }
-        else {
+        else {                                              // otherwise
             for(int i = 0; i < numOfCyl; i++)
                 if(i % 2 == 0)
                     stepsKey.add(decodingKey.get(i));
@@ -563,36 +581,48 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
     }
 
 
-    private void rotateCyl() {
+    private void rotateCyl()
+    // Rotates the main and secondary cylinders
+    {
+        Transform3D rotMain = new Transform3D();
+        rotMain.rotY(angleMain);
+        rotCyl.get(0).setTransform(rotMain);
+
         Transform3D rot = new Transform3D();
         rot.rotY(angle);
-
-        rotCyl.get(0).setTransform(rot);
         rotCyl.get(whatCyl).setTransform(rot);
 
         stepNum++;
     }
 
 
-    private void checkKey() {
+    private void checkKey()
+    // Checks whether the user has taken as many steps as necessary for the cylinder to be in the correct position
+    {
         if(whatCyl != 0 && whatCyl <= numOfCyl) {
             if(stepNum == stepsKey.get(whatCyl-1)) {
-                nextCyl = true;
-                clockwiseDir = !clockwiseDir;
+                nextCyl = true;                         // the user can start rotating the next cylinder
+                clockwiseDir = !clockwiseDir;           // changing the rotating side
 
-                tick.setEnable(true);
+                tick.setEnable(false);
+                tickNext.setEnable(false);
+                tickNext.setEnable(true);               // turning on the sound of the correct cylinder position
             }
             else {
                 nextCyl = false;
 
-                if(stepNum == 10) {
+                if(stepNum == 10) {                     // if the user has completed a full turn
                     stepNum = 0;
                     angle = 0;
                 }
 
+                tickNext.setEnable(false);
                 tick.setEnable(false);
+                tick.setEnable(true);
             }
         }
+        else
+            tick.setEnable(true);
     }
 
 }
