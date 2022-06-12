@@ -4,7 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c1a41b83-1d09-47eb-abfe-ab797919a7b5" name="Changes" comment=" Fixed gameEnded variable">
+    <list default="true" id="c1a41b83-1d09-47eb-abfe-ab797919a7b5" name="Changes" comment=" Added some comments. Added new sounds. Added calculation of password. Small changes and code reorganizations">
+      <change afterPath="$PROJECT_DIR$/img/case.jfif" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/SafeUniverse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/SafeUniverse.java" afterDir="false" />
     </list>
@@ -46,7 +47,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "G:/Inne komputery/Mój komputer/sem 4/Programowanie obiektowe i grafika komputerowa/Laboratorium4/lab04-pierwszy3D",
+    "last_opened_file_path": "G:/Inne komputery/Mój komputer/sem 4/Programowanie obiektowe i grafika komputerowa/SafeProject/img",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -58,6 +59,9 @@
   }
 }]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="G:\Inne komputery\Mój komputer\sem 4\Programowanie obiektowe i grafika komputerowa\SafeProject\img" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="X:\Politechnika\Projekty\POiGK-Project\audio" />
       <recent name="X:\Politechnika\Projekty\POiGK-Project\SafeLock\src" />
@@ -178,18 +182,22 @@
       <option name="project" value="LOCAL" />
       <updated>1654978750036</updated>
     </task>
-    <task id="LOCAL-00008" summary=" Fixed gameEnded variable">
-      <created>1655023905632</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1655023905632</updated>
-    </task>
-    <option name="localTasksCounter" value="9" />
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ID_ORDER">
+      <list>
+        <option value="Default.Root" />
+        <option value="Default.Author" />
+        <option value="Default.Date" />
+        <option value="Default.Subject" />
+        <option value="Space.CommitStatus" />
+      </list>
+    </option>
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -211,8 +219,7 @@
     <MESSAGE value="Added lines on cylinders. Changed textures" />
     <MESSAGE value="Added mechanism of alternating rotation of cylinders (without history of steps), so our program starts to look like a game. Small changes and code optimizations." />
     <MESSAGE value=" Added some comments. Added new sounds. Added calculation of password. Small changes and code reorganizations" />
-    <MESSAGE value=" Fixed gameEnded variable" />
-    <option name="LAST_COMMIT_MESSAGE" value=" Fixed gameEnded variable" />
+    <option name="LAST_COMMIT_MESSAGE" value=" Added some comments. Added new sounds. Added calculation of password. Small changes and code reorganizations" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

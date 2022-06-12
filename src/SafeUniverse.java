@@ -4,12 +4,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 import com.sun.j3d.audioengines.javasound.JavaSoundMixer;
-import com.sun.j3d.utils.behaviors.keyboard.KeyNavigatorBehavior;
 import com.sun.j3d.utils.geometry.Box;
 import com.sun.j3d.utils.image.TextureLoader;
 import com.sun.j3d.utils.universe.*;
@@ -45,6 +42,8 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
     private final Button startButton = new Button("Run");
     private final Button stopButton = new Button("Stop");
     private final Button setDefaultViewButton = new Button("Default View");
+
+    private final Button hintButton = new Button("Hint");
     private boolean latchLeft = false;
     private boolean latchRight = false;
 
@@ -75,7 +74,16 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
 
     // parameters of winning box
     private float wBoxHeight = 0.75f;
-    private float dy = 0;
+    private float dyWBox = 0;
+
+    // parameters of case
+    private ArrayList<Box> caseBoxes = new ArrayList<>();
+    private ArrayList<TransformGroup> setBoxPos = new ArrayList<>();
+    private Float[][] caseDimensions = new Float[6][3];
+    private Float[][] caseWallsPositions = new Float[6][3];
+    private float preDefDimension = 0.1f;
+    private float dxRoof = 0f;
+
 
 
     public SafeUniverse()
@@ -94,6 +102,7 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
         panel.add(startButton);
         panel.add(stopButton);
         panel.add(setDefaultViewButton);
+        panel.add(hintButton);
 
         add(""+ "North",panel);
         startButton.addActionListener(this);
@@ -102,6 +111,8 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
         stopButton.addKeyListener(this);
         setDefaultViewButton.addKeyListener(this);
         setDefaultViewButton.addActionListener(this);
+        hintButton.addKeyListener(this);
+        hintButton.addActionListener(this);
 
         clock1 = new Timer(10, this);
 
@@ -136,7 +147,8 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
         addSounds(tickNext, fileTickNext);
 
         floatingCylinders();    // adding floating cylinders
-        createWinningBox();     // it is required to add winningBox
+        createWinningBox();     // it is required to add winningBox after floatingCylinders
+        createMCase();          // it is required to add Case after floatingCylinders
 
         sceneBG.compile();      // fixing the scene
     }
@@ -223,7 +235,7 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
         steerTG.getTransform(t3d);
 
         // args are: viewer pos, where looking, up direction
-        t3d.lookAt(USERPOS, new Point3d(0,0,0), new Vector3d(0,4,0));
+        t3d.lookAt(USERPOS, new Point3d(0,2,5), new Vector3d(0,4,0));
         t3d.invert();
 
         steerTG.setTransform(t3d);
@@ -421,6 +433,84 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
         sceneBG.addChild(moveBox);
     }
 
+    public void createMCase()
+    // Creating a case to hold a mechanism
+    {
+        float xDimension = cylRad*1.5f;
+        float yDimension = 3f;
+        float zDimension = disBetCyl*(posOfFirstCyl-posOfLastCyl)/2;
+
+        int i = 0;
+        while (i < 6) {
+            //adding dimensions for floor/roof
+            caseDimensions[i][0]   = xDimension;        //x
+            caseDimensions[i][1]   = preDefDimension;   //y
+            caseDimensions[i][2]   = zDimension;        //z
+            //adding dimensions for lef/right wall
+            caseDimensions[++i][0] = preDefDimension;   //x
+            caseDimensions[i][1]   = yDimension;        //y
+            caseDimensions[i][2]   = zDimension;        //z
+            //adding dimensions for front/back wall
+            caseDimensions[++i][0] = xDimension;        //x
+            caseDimensions[i][1]   = yDimension;        //y
+            caseDimensions[i][2]   = preDefDimension;   //z
+            i++;
+        }
+
+        float standardZPos = (disBetCyl*(posOfFirstCyl+posOfLastCyl+0.5f)/2) - cylH/2;
+        float floorVsRoofPos = 0f;
+        float leftVsRightWallPos = -cylRad*1.5f;
+        float frontVsBackWallPos = disBetCyl*posOfFirstCyl;
+
+        i = 0;
+        while (i < 6) {
+            //adding position for floor/roof
+            caseWallsPositions[i][0] = 0f;                   //x
+            caseWallsPositions[i][1] = floorVsRoofPos;       //y
+            caseWallsPositions[i][2] = standardZPos;         //z
+            //adding position for left/right wall
+            caseWallsPositions[++i][0] = leftVsRightWallPos; //x
+            caseWallsPositions[i][1] =   vertPos;            //y
+            caseWallsPositions[i][2] =   standardZPos;       //z
+            //adding position for front/back wall
+            caseWallsPositions[++i][0] = 0f;                 //x
+            caseWallsPositions[i][1] =   vertPos;            //y
+            caseWallsPositions[i][2] = frontVsBackWallPos;   //z
+
+            floorVsRoofPos = vertPos+cylRad*1.5f+(wBoxHeight);
+            leftVsRightWallPos = -leftVsRightWallPos;
+            frontVsBackWallPos = disBetCyl*posOfLastCyl;
+            i++;
+        }
+        //setting appearance
+        Appearance woodStyle = new Appearance();
+        TextureLoader loader = new TextureLoader("img/case.jfif", null);
+        ImageComponent2D image = loader.getImage();
+
+        Texture2D wood = new Texture2D(Texture.BASE_LEVEL, Texture.RGBA, image.getWidth(), image.getHeight());
+        wood.setImage(0, image);
+        wood.setBoundaryModeS(Texture.WRAP);
+        wood.setBoundaryModeT(Texture.WRAP);
+
+        woodStyle.setTexture(wood);
+
+
+        //adding walls in order: floor, roof, left, right, front, back
+        for(int j = 0; j < 6; j++)
+        {
+                caseBoxes.add(new Box(caseDimensions[j][0], caseDimensions[j][1] , caseDimensions[j][2], woodStyle));
+
+                Transform3D initPos = new Transform3D();
+                initPos.set(new Vector3f( caseWallsPositions[j][0], caseWallsPositions[j][1], caseWallsPositions[j][2]));
+
+                setBoxPos.add(new TransformGroup(initPos));
+                setBoxPos.get(j).setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+                setBoxPos.get(j).addChild(caseBoxes.get(j));
+
+                sceneBG.addChild(setBoxPos.get(j));
+        }
+    }
+
 
     public int randomInt()
     // Generator of numbers from 1 to 9
@@ -471,6 +561,24 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
         if(e.getSource() == setDefaultViewButton)
             initUserPosition();
 
+        if(e.getSource() == hintButton)
+        {
+            boolean roofMoving = true;
+            while(roofMoving)
+            {
+
+                Transform3D boxTrans = new Transform3D();
+                boxTrans.setTranslation(new Vector3f(0f + dxRoof, vertPos+cylRad*1.5f+(wBoxHeight), (disBetCyl*(posOfFirstCyl+posOfLastCyl+0.5f)/2) - cylH/2));
+                setBoxPos.get(3).setTransform(boxTrans);
+
+                dxRoof += 0.1f;
+
+                if (dxRoof >= cylRad*3f)
+                    roofMoving = false;
+
+            }
+        }
+
         if(gameEnded == 0)
             if(whatCyl != numOfCyl || !nextCyl)         // in other words: if the user has not reached the situation
                 setAngle();                             // when he turns the last cylinder, which is located in the correct position
@@ -479,12 +587,12 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
 
         if(gameEnded == 1) {
             Transform3D boxTrans = new Transform3D();
-            boxTrans.setTranslation(new Vector3f(0f, (vertPos+cylRad*1.5f+wBoxHeight)-dy, (disBetCyl*(posOfFirstCyl+posOfLastCyl+0.5f)/2) - cylH/2));
+            boxTrans.setTranslation(new Vector3f(0f, (vertPos+cylRad*1.5f+wBoxHeight)- dyWBox, (disBetCyl*(posOfFirstCyl+posOfLastCyl+0.5f)/2) - cylH/2));
             moveBox.setTransform(boxTrans);
 
-            dy += 0.1f;
+            dyWBox += 0.1f;
 
-            if (dy >= cylRad*1.5f)
+            if (dyWBox >= cylRad*1.5f)
                 gameEnded = 2;
         }
     }
