@@ -49,6 +49,7 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
     private boolean latchRight = false;
 
     private final ArrayList<TransformGroup>rotCyl = new ArrayList<>();
+    private TransformGroup moveBox;
 
     // game parameters
     private ArrayList<Integer> decodingKey = new ArrayList<>();
@@ -73,7 +74,8 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
     private float angleMain = 0;
 
     // parameters of winning box
-    float wBoxHeight = 0.75f;
+    private float wBoxHeight = 0.75f;
+    private float dy = 0;
 
 
     public SafeUniverse()
@@ -410,9 +412,10 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
         Box winningBox = new Box(axRad, wBoxHeight, disBetCyl*(posOfFirstCyl-posOfLastCyl-1)/2, woodStyle);
 
         Transform3D initPos = new Transform3D();
-        initPos.set(new Vector3f(0f, vertPos+cylRad*1.5f+(wBoxHeight), (disBetCyl*(posOfFirstCyl+posOfLastCyl+1)/2) - cylH/2));
+        initPos.set(new Vector3f(0f, vertPos+cylRad*1.5f+(wBoxHeight), (disBetCyl*(posOfFirstCyl+posOfLastCyl+0.5f)/2) - cylH/2));
 
-        TransformGroup moveBox = new TransformGroup(initPos);
+        moveBox = new TransformGroup(initPos);
+        moveBox.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
         moveBox.addChild(winningBox);
 
         sceneBG.addChild(moveBox);
@@ -468,17 +471,6 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
         if(e.getSource() == setDefaultViewButton)
             initUserPosition();
 
-        if(gameEnded == 0 && (whatCyl != numOfCyl || !nextCyl))     // in other words: if the user has not reached the situation
-            setAngle();                                             // when he turns the last cylinder, which is located in the correct position
-        else if (gameEnded == 1)
-            gameEnded = 2;
-
-        if(gameEnded == 1) {
-            System.out.println("You are a ...... WINNER :)");
-            gameEnded = 2;
-        }
-
-
         if(gameEnded == 0)
             if(whatCyl != numOfCyl || !nextCyl)         // in other words: if the user has not reached the situation
                 setAngle();                             // when he turns the last cylinder, which is located in the correct position
@@ -486,8 +478,14 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
                 gameEnded = 1;
 
         if(gameEnded == 1) {
-            System.out.println("You are a ...... WINNER :)");
-            gameEnded = 2;
+            Transform3D boxTrans = new Transform3D();
+            boxTrans.setTranslation(new Vector3f(0f, (vertPos+cylRad*1.5f+wBoxHeight)-dy, (disBetCyl*(posOfFirstCyl+posOfLastCyl+0.5f)/2) - cylH/2));
+            moveBox.setTransform(boxTrans);
+
+            dy += 0.1f;
+
+            if (dy >= cylRad*1.5f)
+                gameEnded = 2;
         }
     }
 

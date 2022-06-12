@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c1a41b83-1d09-47eb-abfe-ab797919a7b5" name="Changes" comment=" Added some comments. Added new sounds. Added calculation of password. Small changes and code reorganizations">
+    <list default="true" id="c1a41b83-1d09-47eb-abfe-ab797919a7b5" name="Changes" comment=" Fixed gameEnded variable">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/SafeUniverse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/SafeUniverse.java" afterDir="false" />
     </list>
@@ -178,7 +178,14 @@
       <option name="project" value="LOCAL" />
       <updated>1654978750036</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary=" Fixed gameEnded variable">
+      <created>1655023905632</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1655023905632</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -204,7 +211,8 @@
     <MESSAGE value="Added lines on cylinders. Changed textures" />
     <MESSAGE value="Added mechanism of alternating rotation of cylinders (without history of steps), so our program starts to look like a game. Small changes and code optimizations." />
     <MESSAGE value=" Added some comments. Added new sounds. Added calculation of password. Small changes and code reorganizations" />
-    <option name="LAST_COMMIT_MESSAGE" value=" Added some comments. Added new sounds. Added calculation of password. Small changes and code reorganizations" />
+    <MESSAGE value=" Fixed gameEnded variable" />
+    <option name="LAST_COMMIT_MESSAGE" value=" Fixed gameEnded variable" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
