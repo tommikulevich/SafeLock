@@ -4,11 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c1a41b83-1d09-47eb-abfe-ab797919a7b5" name="Changes" comment="Added setCapability">
+    <list default="true" id="c1a41b83-1d09-47eb-abfe-ab797919a7b5" name="Changes" comment=" Added some comments. Added new sounds. Added calculation of password. Small changes and code reorganizations">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audio/laser.wav" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/audio/tick.wav" beforeDir="false" afterPath="$PROJECT_DIR$/audio/tick.wav" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audio/tickNext.wav" beforeDir="false" afterPath="$PROJECT_DIR$/audio/tickNext.wav" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/SafeUniverse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/SafeUniverse.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -174,7 +171,14 @@
       <option name="project" value="LOCAL" />
       <updated>1654897163601</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary=" Added some comments. Added new sounds. Added calculation of password. Small changes and code reorganizations">
+      <created>1654978750036</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1654978750036</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -199,6 +203,7 @@
     <MESSAGE value="StopButton has new functionality following its name. New setDefaultViewButton was added, but doesn't have working functionality yet. The overview of the user window has been changed." />
     <MESSAGE value="Added lines on cylinders. Changed textures" />
     <MESSAGE value="Added mechanism of alternating rotation of cylinders (without history of steps), so our program starts to look like a game. Small changes and code optimizations." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added mechanism of alternating rotation of cylinders (without history of steps), so our program starts to look like a game. Small changes and code optimizations." />
+    <MESSAGE value=" Added some comments. Added new sounds. Added calculation of password. Small changes and code reorganizations" />
+    <option name="LAST_COMMIT_MESSAGE" value=" Added some comments. Added new sounds. Added calculation of password. Small changes and code reorganizations" />
   </component>
 </project>

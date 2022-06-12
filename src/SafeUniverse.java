@@ -56,9 +56,9 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
     private ArrayList<Integer> password = new ArrayList<>();
     private int whatCyl = 0;
     private int stepNum = 0;
+    private int gameEnded = 0;
     private boolean clockwiseDir;
     private boolean nextCyl;
-    private boolean gameEnded;
 
     // parameters of cylinders
     private int numOfCyl = 5;
@@ -468,15 +468,27 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
         if(e.getSource() == setDefaultViewButton)
             initUserPosition();
 
-        if(whatCyl != numOfCyl || !nextCyl)     // in other words: if the user has not reached the situation
-            setAngle();                         // when he turns the last cylinder, which is located in the correct position
-        else {
-            gameEnded = true;
-            nextCyl = false;
+        if(gameEnded == 0 && (whatCyl != numOfCyl || !nextCyl))     // in other words: if the user has not reached the situation
+            setAngle();                                             // when he turns the last cylinder, which is located in the correct position
+        else if (gameEnded == 1)
+            gameEnded = 2;
+
+        if(gameEnded == 1) {
+            System.out.println("You are a ...... WINNER :)");
+            gameEnded = 2;
         }
 
-        if(gameEnded)
+
+        if(gameEnded == 0)
+            if(whatCyl != numOfCyl || !nextCyl)         // in other words: if the user has not reached the situation
+                setAngle();                             // when he turns the last cylinder, which is located in the correct position
+            else
+                gameEnded = 1;
+
+        if(gameEnded == 1) {
             System.out.println("You are a ...... WINNER :)");
+            gameEnded = 2;
+        }
     }
 
 
