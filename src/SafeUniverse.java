@@ -39,11 +39,14 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
 
     private final Timer clock1;
     private boolean leftButton = false, rightButton = false;
-    private final Button startButton = new Button("Run");
-    private final Button stopButton = new Button("Stop");
+    private final Button infoButton = new Button("Info");
+    private final Button historyButton = new Button("History");
+    private final Choice levelChoice = new Choice();
+    private final Button startButton = new Button("Start New Game");
+    private final Button pauseButton = new Button("Pause");
     private final Button setDefaultViewButton = new Button("Default View");
-
-    private final Button hintButton = new Button("Hint");
+    private final Button stepBackButton = new Button("Step Back");
+    private final Button hintButton = new Button("Hint I");
     private boolean latchLeft = false;
     private boolean latchRight = false;
 
@@ -79,13 +82,12 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
     // parameters of case
     private ArrayList<Box> caseBoxes = new ArrayList<>();
     private ArrayList<TransformGroup> setBoxPos = new ArrayList<>();
-    private Float[][] caseDimensions = new Float[6][3];
-    private Float[][] caseWallsPositions = new Float[6][3];
-    private float preDefDimension = 0.1f;
+    private Float[][] caseDim = new Float[6][3];
+    private Float[][] caseWallsPos = new Float[6][3];
+    private float preDefDim = 0.1f;
     private float dxRoof = 0f;
 
-
-
+    
     public SafeUniverse()
     // A panel holding a 3D canvas
     {
@@ -98,19 +100,39 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
         add("Center", canvas3D);
         canvas3D.addKeyListener(this);
 
-        JPanel panel = new JPanel();
-        panel.add(startButton);
-        panel.add(stopButton);
-        panel.add(setDefaultViewButton);
-        panel.add(hintButton);
+        levelChoice.add("Easy");
+        levelChoice.add("Medium");
+        levelChoice.add("Hard");
 
-        add(""+ "North",panel);
+        JPanel panel1 = new JPanel();
+        panel1.add(infoButton);
+        panel1.add(historyButton);
+        panel1.add(startButton);
+        panel1.add(levelChoice);
+
+        add(""+"North", panel1);
+        infoButton.addActionListener(this);
+        infoButton.addKeyListener(this);
+        historyButton.addActionListener(this);
+        historyButton.addKeyListener(this);
         startButton.addActionListener(this);
         startButton.addKeyListener(this);
-        stopButton.addActionListener(this);
-        stopButton.addKeyListener(this);
+        // in fact levelChoice doesn't require actionListener
+        // to get it actual value we can use levelChoice.getItem(levelChoice.getSelectedIndex());
+
+        JPanel panel2 = new JPanel();
+        panel2.add(pauseButton);
+        panel2.add(setDefaultViewButton);
+        panel2.add(stepBackButton);
+        panel2.add(hintButton);
+
+        add(""+"South", panel2);
+        pauseButton.addActionListener(this);
+        pauseButton.addKeyListener(this);
         setDefaultViewButton.addKeyListener(this);
         setDefaultViewButton.addActionListener(this);
+        stepBackButton.addKeyListener(this);
+        stepBackButton.addActionListener(this);
         hintButton.addKeyListener(this);
         hintButton.addActionListener(this);
 
@@ -183,7 +205,7 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
     {
         Background back = new Background();
         back.setApplicationBounds(bounds);
-        back.setColor(0.17f, 0.65f, 0.92f);    // sky colour
+        back.setColor(0.17f, 0.75f, 0.93f);    // sky colour
 
         sceneBG.addChild(back);
     }
@@ -247,7 +269,7 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
     {
         // loading textures
         Appearance woodStyle = new Appearance();
-        TextureLoader loader = new TextureLoader("img/wood.png", null);
+        TextureLoader loader = new TextureLoader("img/wood.jpg", null);
         ImageComponent2D image = loader.getImage();
 
         Texture2D wood = new Texture2D(Texture.BASE_LEVEL, Texture.RGBA, image.getWidth(), image.getHeight());
@@ -411,7 +433,7 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
     // Creating a winning box
     {
         Appearance woodStyle = new Appearance();
-        TextureLoader loader = new TextureLoader("img/wood.png", null);
+        TextureLoader loader = new TextureLoader("img/wood.jpg", null);
         ImageComponent2D image = loader.getImage();
 
         Texture2D wood = new Texture2D(Texture.BASE_LEVEL, Texture.RGBA, image.getWidth(), image.getHeight());
@@ -433,58 +455,66 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
         sceneBG.addChild(moveBox);
     }
 
+
     public void createMCase()
     // Creating a case to hold a mechanism
     {
-        float xDimension = cylRad*1.5f;
-        float yDimension = 3f;
-        float zDimension = disBetCyl*(posOfFirstCyl-posOfLastCyl)/2;
+        float xDim = cylRad*2.0f;
+        float yDim = 3f;
+        float zDim = disBetCyl*(posOfFirstCyl-posOfLastCyl)/2;
 
         int i = 0;
         while (i < 6) {
-            //adding dimensions for floor/roof
-            caseDimensions[i][0]   = xDimension;        //x
-            caseDimensions[i][1]   = preDefDimension;   //y
-            caseDimensions[i][2]   = zDimension;        //z
-            //adding dimensions for lef/right wall
-            caseDimensions[++i][0] = preDefDimension;   //x
-            caseDimensions[i][1]   = yDimension;        //y
-            caseDimensions[i][2]   = zDimension;        //z
-            //adding dimensions for front/back wall
-            caseDimensions[++i][0] = xDimension;        //x
-            caseDimensions[i][1]   = yDimension;        //y
-            caseDimensions[i][2]   = preDefDimension;   //z
+            // adding dimensions for floor/roof
+            caseDim[i][0]   = xDim;         // x
+            caseDim[i][1]   = preDefDim;    // y
+            caseDim[i][2]   = zDim;         // z
+
+            // adding dimensions for left/right wall
+            caseDim[++i][0] = preDefDim;    // x
+            caseDim[i][1]   = yDim;         // y
+            caseDim[i][2]   = zDim;         // z
+
+            // adding dimensions for front/back wall
+            caseDim[++i][0] = xDim;         // x
+            caseDim[i][1]   = yDim;         // y
+            caseDim[i][2]   = preDefDim;    // z
+
             i++;
         }
 
         float standardZPos = (disBetCyl*(posOfFirstCyl+posOfLastCyl+0.5f)/2) - cylH/2;
         float floorVsRoofPos = 0f;
-        float leftVsRightWallPos = -cylRad*1.5f;
+        float leftVsRightWallPos = -cylRad*2.0f;
         float frontVsBackWallPos = disBetCyl*posOfFirstCyl;
 
         i = 0;
         while (i < 6) {
-            //adding position for floor/roof
-            caseWallsPositions[i][0] = 0f;                   //x
-            caseWallsPositions[i][1] = floorVsRoofPos;       //y
-            caseWallsPositions[i][2] = standardZPos;         //z
-            //adding position for left/right wall
-            caseWallsPositions[++i][0] = leftVsRightWallPos; //x
-            caseWallsPositions[i][1] =   vertPos;            //y
-            caseWallsPositions[i][2] =   standardZPos;       //z
-            //adding position for front/back wall
-            caseWallsPositions[++i][0] = 0f;                 //x
-            caseWallsPositions[i][1] =   vertPos;            //y
-            caseWallsPositions[i][2] = frontVsBackWallPos;   //z
+            // adding position for floor/roof
+            caseWallsPos[i][0]   = 0f;                   // x
+            caseWallsPos[i][1]   = floorVsRoofPos+0.11f; // y
+            caseWallsPos[i][2]   = standardZPos;         // z
+
+            // adding position for left/right wall
+            caseWallsPos[++i][0] = leftVsRightWallPos;   // x
+            caseWallsPos[i][1]   = vertPos+0.11f;        // y
+            caseWallsPos[i][2]   = standardZPos;         // z
+
+            // adding position for front/back wall
+            caseWallsPos[++i][0] = 0f;                   // x
+            caseWallsPos[i][1]   = vertPos+0.11f;        // y
+            caseWallsPos[i][2]   = frontVsBackWallPos;   // z
 
             floorVsRoofPos = vertPos+cylRad*1.5f+(wBoxHeight);
             leftVsRightWallPos = -leftVsRightWallPos;
             frontVsBackWallPos = disBetCyl*posOfLastCyl;
+
             i++;
         }
-        //setting appearance
+
+        // setting appearance
         Appearance woodStyle = new Appearance();
-        TextureLoader loader = new TextureLoader("img/case.jfif", null);
+        TextureLoader loader = new TextureLoader("img/case.jpg", null);
         ImageComponent2D image = loader.getImage();
 
         Texture2D wood = new Texture2D(Texture.BASE_LEVEL, Texture.RGBA, image.getWidth(), image.getHeight());
@@ -494,20 +524,18 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
 
         woodStyle.setTexture(wood);
 
-
         //adding walls in order: floor, roof, left, right, front, back
-        for(int j = 0; j < 6; j++)
-        {
-                caseBoxes.add(new Box(caseDimensions[j][0], caseDimensions[j][1] , caseDimensions[j][2], woodStyle));
+        for(int j = 0; j < 6; j++) {
+            caseBoxes.add(new Box(caseDim[j][0], caseDim[j][1] , caseDim[j][2], Box.GENERATE_NORMALS| Box.GENERATE_TEXTURE_COORDS, woodStyle));
 
-                Transform3D initPos = new Transform3D();
-                initPos.set(new Vector3f( caseWallsPositions[j][0], caseWallsPositions[j][1], caseWallsPositions[j][2]));
+            Transform3D initPos = new Transform3D();
+            initPos.set(new Vector3f(caseWallsPos[j][0], caseWallsPos[j][1], caseWallsPos[j][2]));
 
-                setBoxPos.add(new TransformGroup(initPos));
-                setBoxPos.get(j).setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
-                setBoxPos.get(j).addChild(caseBoxes.get(j));
+            setBoxPos.add(new TransformGroup(initPos));
+            setBoxPos.get(j).setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+            setBoxPos.get(j).addChild(caseBoxes.get(j));
 
-                sceneBG.addChild(setBoxPos.get(j));
+            sceneBG.addChild(setBoxPos.get(j));
         }
     }
 
@@ -551,12 +579,15 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == startButton)
+        if(e.getSource() == startButton) 
             if(!clock1.isRunning())
                 clock1.start();
-            else if(e.getSource() == stopButton)
-                if(clock1.isRunning())
-                    clock1.stop();
+
+        if(e.getSource() == pauseButton)
+            if(clock1.isRunning())
+                clock1.stop();
+            else
+                clock1.start();
 
         if(e.getSource() == setDefaultViewButton)
             initUserPosition();
