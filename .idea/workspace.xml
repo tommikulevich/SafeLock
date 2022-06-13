@@ -4,8 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c1a41b83-1d09-47eb-abfe-ab797919a7b5" name="Changes" comment="Added mechanism of alternating rotation of cylinders (without history of steps), so our program starts to look like a game. Small changes and code optimizations.">
+    <list default="true" id="c1a41b83-1d09-47eb-abfe-ab797919a7b5" name="Changes" comment="Added winning box animation. Small fixes in code">
+      <change afterPath="$PROJECT_DIR$/src/SafeCreation.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/SafeInteraction.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/wood.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/SafeUniverse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/SafeUniverse.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -46,17 +49,21 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;G:/Inne komputery/Mój komputer/sem 4/Programowanie obiektowe i grafika komputerowa/Laboratorium4/lab04-pierwszy3D&quot;,
+    &quot;last_opened_file_path&quot;: &quot;G:/Inne komputery/Mój komputer/sem 4/Programowanie obiektowe i grafika komputerowa/SafeProject/img&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Problems&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;
   }
 }</component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="G:\Inne komputery\Mój komputer\sem 4\Programowanie obiektowe i grafika komputerowa\SafeProject\img" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="X:\Politechnika\Projekty\POiGK-Project\audio" />
       <recent name="X:\Politechnika\Projekty\POiGK-Project\SafeLock\src" />
@@ -110,10 +117,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.SafeLock3D" />
-        <item itemvalue="Application.SafeLock" />
-        <item itemvalue="Application.ExtendedSimpleAnimation3d" />
         <item itemvalue="Application.TischClass" />
+        <item itemvalue="Application.ExtendedSimpleAnimation3d" />
         <item itemvalue="Application.CuboRobotV02" />
+        <item itemvalue="Application.SafeLock" />
       </list>
     </recent_temporary>
   </component>
@@ -170,18 +177,29 @@
       <option name="project" value="LOCAL" />
       <updated>1654897163601</updated>
     </task>
-    <task id="LOCAL-00007" summary="Added example sound">
-      <created>1654944842851</created>
+    <task id="LOCAL-00007" summary=" Added some comments. Added new sounds. Added calculation of password. Small changes and code reorganizations">
+      <created>1654978750036</created>
       <option name="number" value="00007" />
       <option name="presentableId" value="LOCAL-00007" />
       <option name="project" value="LOCAL" />
-      <updated>1654944842851</updated>
+      <updated>1654978750036</updated>
     </task>
     <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ID_ORDER">
+      <list>
+        <option value="Default.Root" />
+        <option value="Default.Author" />
+        <option value="Default.Date" />
+        <option value="Default.Subject" />
+        <option value="Space.CommitStatus" />
+      </list>
+    </option>
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -202,8 +220,8 @@
     <MESSAGE value="StopButton has new functionality following its name. New setDefaultViewButton was added, but doesn't have working functionality yet. The overview of the user window has been changed." />
     <MESSAGE value="Added lines on cylinders. Changed textures" />
     <MESSAGE value="Added mechanism of alternating rotation of cylinders (without history of steps), so our program starts to look like a game. Small changes and code optimizations." />
-    <MESSAGE value="Added example sound" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added example sound" />
+    <MESSAGE value=" Added some comments. Added new sounds. Added calculation of password. Small changes and code reorganizations" />
+    <option name="LAST_COMMIT_MESSAGE" value=" Added some comments. Added new sounds. Added calculation of password. Small changes and code reorganizations" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
