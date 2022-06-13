@@ -97,7 +97,7 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
         addSounds(tickNext, fileTickNext);
 
         sC = new SafeCreation();
-        sC.createElements(sceneBG);                        // adding cylinders, winning box and case
+        sC.addElements(sceneBG);                        // adding cylinders, winning box and case
 
         sI = new SafeInteraction();
 
@@ -287,7 +287,8 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
             initUserPosition();
 
         if(action == hintButton)
-            sI.hint();
+            if(clock1.isRunning())
+                sI.hint();
 
         sI.safeGame(leftButton, rightButton, tick, tickNext, sC);
     }

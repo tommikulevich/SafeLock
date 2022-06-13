@@ -3,7 +3,7 @@ import javax.vecmath.*;
 
 
 public class SafeInteraction
-// Holding the 3D canvas where the loaded elements are displayed
+//
 {
 
     public boolean latchLeft = false;
@@ -191,19 +191,15 @@ public class SafeInteraction
     public void hint()
     //
     {
-        boolean roofMoving = true;
-        while(roofMoving)
-        {
-
+        while(true) {
             Transform3D boxTrans = new Transform3D();
             boxTrans.setTranslation(new Vector3f(0f + dxRoof, sC.vertPos+sC.cylRad*1.5f+(sC.wBoxHeight), (sC.disBetCyl*(sC.posOfFirstCyl+sC.posOfLastCyl+0.5f)/2) - sC.cylH/2));
             sC.setBoxPos.get(3).setTransform(boxTrans);
 
             dxRoof += 0.1f;
 
-            if (dxRoof >= sC.cylRad*3f)
-                roofMoving = false;
-
+            if (dxRoof >= sC.cylRad*4f)
+                break;
         }
     }
 

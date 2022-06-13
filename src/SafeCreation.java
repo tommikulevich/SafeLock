@@ -43,6 +43,14 @@ public class SafeCreation
     public float preDefDim = 0.1f;
 
 
+    public SafeCreation()
+    {
+        createCylinders();
+        createWinningBox();
+        createCase();
+    }
+
+
     public void createCylinders()
     // Creating floating cylinders
     {
@@ -328,13 +336,9 @@ public class SafeCreation
     }
 
 
-    public void createElements(BranchGroup sceneBG)
+    public void addElements(BranchGroup sceneBG)
     //
     {
-        createCylinders();
-        createWinningBox();
-        createCase();
-
         sceneBG.addChild(tg_rotBG);
         sceneBG.addChild(moveBoxBG);
         sceneBG.addChild(caseBoxBG);
