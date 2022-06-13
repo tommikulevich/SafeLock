@@ -45,8 +45,10 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
     public Button stepBackButton;
     public Button hintButton;
 
-    SafeCreation sC;
-    SafeInteraction sI;
+    boolean isHint;
+
+    public SafeCreation sC;
+    public SafeInteraction sI;
 
 
     public SafeUniverse()
@@ -288,7 +290,11 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
 
         if(action == hintButton)
             if(clock1.isRunning())
-                sI.hint();
+                isHint = true;
+
+        if(isHint)
+            isHint = sI.hint(isHint);
+
 
         sI.safeGame(leftButton, rightButton, tick, tickNext, sC);
     }

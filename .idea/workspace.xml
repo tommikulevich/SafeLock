@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c1a41b83-1d09-47eb-abfe-ab797919a7b5" name="Changes" comment="Small fixes">
+    <list default="true" id="c1a41b83-1d09-47eb-abfe-ab797919a7b5" name="Changes" comment="Small fixes 2.0">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/SafeCreation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/SafeCreation.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/SafeInteraction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/SafeInteraction.java" afterDir="false" />
@@ -190,7 +190,14 @@
       <option name="project" value="LOCAL" />
       <updated>1655128961382</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Small fixes 2.0">
+      <created>1655129722439</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1655129722439</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -228,7 +235,8 @@
     <MESSAGE value="Added mechanism of alternating rotation of cylinders (without history of steps), so our program starts to look like a game. Small changes and code optimizations." />
     <MESSAGE value=" Added some comments. Added new sounds. Added calculation of password. Small changes and code reorganizations" />
     <MESSAGE value="Small fixes" />
-    <option name="LAST_COMMIT_MESSAGE" value="Small fixes" />
+    <MESSAGE value="Small fixes 2.0" />
+    <option name="LAST_COMMIT_MESSAGE" value="Small fixes 2.0" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -333,6 +333,14 @@ public class SafeCreation
 
             caseBoxBG.addChild(setBoxPos.get(j));
         }
+
+        // creating line on floor
+        Appearance app = new Appearance();
+        app.setColoringAttributes(new ColoringAttributes(new Color3f(Color.BLACK), ColoringAttributes.NICEST));
+
+        Box line = new Box(axRad, preDefDim+0.01f, disBetCyl*(posOfFirstCyl-posOfLastCyl-1)/2, app);
+
+        caseBoxes.get(3).addChild(line);
     }
 
 

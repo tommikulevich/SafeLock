@@ -188,19 +188,19 @@ public class SafeInteraction
             tick.setEnable(true);
     }
 
-    public void hint()
+    public boolean hint(boolean isHint)
     //
     {
-        while(true) {
-            Transform3D boxTrans = new Transform3D();
-            boxTrans.setTranslation(new Vector3f(0f + dxRoof, sC.vertPos+sC.cylRad*1.5f+(sC.wBoxHeight), (sC.disBetCyl*(sC.posOfFirstCyl+sC.posOfLastCyl+0.5f)/2) - sC.cylH/2));
-            sC.setBoxPos.get(3).setTransform(boxTrans);
+        Transform3D boxTrans = new Transform3D();
+        boxTrans.setTranslation(new Vector3f(0f + dxRoof, sC.vertPos+sC.cylRad*1.5f+(sC.wBoxHeight), (sC.disBetCyl*(sC.posOfFirstCyl+sC.posOfLastCyl+0.5f)/2) - sC.cylH/2));
+        sC.setBoxPos.get(3).setTransform(boxTrans);
 
-            dxRoof += 0.1f;
+        if (dxRoof >= sC.cylRad*4f)
+            return false;
 
-            if (dxRoof >= sC.cylRad*4f)
-                break;
-        }
+        dxRoof += 0.1f;
+
+        return true;
     }
 
 }
