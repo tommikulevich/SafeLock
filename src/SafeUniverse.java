@@ -293,7 +293,7 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
                 isHint = true;
 
         if(isHint)
-            isHint = sI.hint(isHint);
+            isHint = sI.hint();
 
 
         sI.safeGame(leftButton, rightButton, tick, tickNext, sC);

@@ -239,7 +239,7 @@ public class SafeCreation
 
         woodStyle.setTexture(wood);
 
-        Box winningBox = new Box(axRad, wBoxHeight, disBetCyl*(posOfFirstCyl-posOfLastCyl-1)/2, woodStyle);
+        Box winningBox = new Box(axRad, wBoxHeight, disBetCyl*(posOfFirstCyl-posOfLastCyl-1)/2, Box.GENERATE_NORMALS| Box.GENERATE_TEXTURE_COORDS, woodStyle);
 
         Transform3D initPos = new Transform3D();
         initPos.set(new Vector3f(0f, vertPos+cylRad*1.5f+(wBoxHeight), (disBetCyl*(posOfFirstCyl+posOfLastCyl+0.5f)/2) - cylH/2));
