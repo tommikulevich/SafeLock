@@ -18,7 +18,7 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
     private static final int PHEIGHT = 512;
     public static final int BOUNDSIZE = 100;   // larger than the world
 
-    public static final Point3d USERPOS = new Point3d(0,5,20); // initial user position
+    public static final Point3d USERPOS = new Point3d(-13,10,13); // initial user position
 
     public SimpleUniverse su;
     public BranchGroup sceneBG;
@@ -37,15 +37,18 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
     public Timer clock1;
     public boolean leftButton = false, rightButton = false;
     public Button infoButton;
-    public Button historyButton;
+    public Button saveButton;
     public Choice levelChoice;
     public Button startButton;
     public Button pauseButton;
     public Button setDefaultViewButton;
-    public Button stepBackButton;
     public Button hintButton;
+    public Button lookInsideButton;
+    public Button stepBackButton;
+    public Button giveNumButton;
 
-    boolean isHint;
+    boolean isHintLI;
+    boolean isHintGN;
 
     public SafeCreation sC;
     public SafeInteraction sI;
@@ -111,13 +114,15 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
     // Adding buttons
     {
         infoButton = new Button("Info");
-        historyButton = new Button("History");
+        saveButton = new Button("Save");
         levelChoice = new Choice();
         startButton = new Button("Start New Game");
-        pauseButton = new Button("Pause");
+        pauseButton = new Button("Pause/Continue");
         setDefaultViewButton = new Button("Default View");
+        hintButton = new Button("Hint (doesn't work)");
+        lookInsideButton = new Button("Look Inside");
         stepBackButton = new Button("Step Back");
-        hintButton = new Button("Hint I");
+        giveNumButton = new Button("Give Num");
 
         levelChoice.add("Easy");
         levelChoice.add("Medium");
@@ -125,15 +130,15 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
 
         panel1 = new JPanel();
         panel1.add(infoButton);
-        panel1.add(historyButton);
+        panel1.add(saveButton);
         panel1.add(startButton);
         panel1.add(levelChoice);
         add(""+"North", panel1);
 
         infoButton.addActionListener(this);
         infoButton.addKeyListener(this);
-        historyButton.addActionListener(this);
-        historyButton.addKeyListener(this);
+        saveButton.addActionListener(this);
+        saveButton.addKeyListener(this);
         startButton.addActionListener(this);
         startButton.addKeyListener(this);
         // in fact levelChoice doesn't require actionListener
@@ -142,18 +147,25 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
         panel2 = new JPanel();
         panel2.add(pauseButton);
         panel2.add(setDefaultViewButton);
+        //panel2.add(hintButton);
+        panel2.add(lookInsideButton);
         panel2.add(stepBackButton);
-        panel2.add(hintButton);
+        panel2.add(giveNumButton);
+
         add(""+"South", panel2);
 
         pauseButton.addActionListener(this);
         pauseButton.addKeyListener(this);
         setDefaultViewButton.addKeyListener(this);
         setDefaultViewButton.addActionListener(this);
-        stepBackButton.addKeyListener(this);
-        stepBackButton.addActionListener(this);
         hintButton.addKeyListener(this);
         hintButton.addActionListener(this);
+        lookInsideButton.addKeyListener(this);
+        lookInsideButton.addActionListener(this);
+        stepBackButton.addKeyListener(this);
+        stepBackButton.addActionListener(this);
+        giveNumButton.addKeyListener(this);
+        giveNumButton.addActionListener(this);
     }
 
     private void lightScene()
@@ -237,7 +249,7 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
         steerTG.getTransform(t3d);
 
         // args are: viewer pos, where looking, up direction
-        t3d.lookAt(USERPOS, new Point3d(0,2,5), new Vector3d(0,4,0));
+        t3d.lookAt(USERPOS, new Point3d(0,2,0), new Vector3d(0,5,0));
         t3d.invert();
 
         steerTG.setTransform(t3d);
@@ -291,16 +303,23 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
         if(action == setDefaultViewButton)
             initUserPosition();
 
-        if(action == hintButton)
+        if(action == lookInsideButton)
             if(clock1.isRunning())
-                isHint = true;
+                isHintLI = true;
 
-        if(isHint)
-            isHint = sI.hintFloor();
+        if(isHintLI)
+            isHintLI = sI.lookInside();
 
         if(action == stepBackButton)
             if(clock1.isRunning())
                 sI.stepBack();
+
+        if(action == giveNumButton)
+            if(clock1.isRunning())
+                isHintGN = true;
+
+        if(isHintGN)
+            isHintGN = sI.giveNum();
 
         sI.safeGame(leftButton, rightButton, tick, tickNext, sC);
     }

@@ -19,10 +19,12 @@ public class SafeInteraction
     public int gameEnded = 0;
     public boolean clockwiseDir;
     public boolean nextCyl;
-    public float dyWBox = 0;
-    public float dxRoof = 0f;
 
-    public boolean isStepBack = false;
+    public float dyWBox = 0;
+    public float dzRoof = 0;
+    public float dt = 0;
+
+    public boolean isHintSB = false;
 
     public boolean leftButton;
     public boolean rightButton;
@@ -89,6 +91,7 @@ public class SafeInteraction
                 angle += Math.PI/5;
                 rotateCyl();
                 checkKey();
+                dispActNums();
             }
 
             latchLeft = false;
@@ -121,6 +124,7 @@ public class SafeInteraction
                 angle -= Math.PI/5;
                 rotateCyl();
                 checkKey();
+                dispActNums();
             }
 
             latchRight = false;
@@ -151,6 +155,10 @@ public class SafeInteraction
     private void rotateCyl()
     // Rotates the main and secondary cylinders
     {
+        int temp = (int)Math.abs(Math.round((angleMain/(Math.PI/5))));
+        if(temp == 10)
+            angleMain = 0;
+
         Transform3D rotMain = new Transform3D();
         rotMain.rotY(angleMain);
         sC.rotCyl.get(0).setTransform(rotMain);
@@ -193,17 +201,29 @@ public class SafeInteraction
     }
 
 
-    public boolean hintFloor()
+    private void dispActNums()
     //
     {
-        if (dxRoof >= sC.cylRad*4f)
+        int number = (int)Math.round(angleMain/(Math.PI/5) % 10);
+
+        if(number >= 0)
+            sC.dispNums.get(whatCyl-1).setString(Integer.toString(number));
+        else
+            sC.dispNums.get(whatCyl-1).setString(Integer.toString(10-Math.abs(number)));
+    }
+
+
+    public boolean lookInside()
+    //
+    {
+        if (dzRoof >= sC.disBetCyl*(sC.posOfFirstCyl-sC.posOfLastCyl)+sC.preDefDim)
             return false;
 
         Transform3D boxTrans = new Transform3D();
-        boxTrans.setTranslation(new Vector3f(0f + dxRoof, sC.vertPos+sC.cylRad*1.5f+(sC.wBoxHeight), (sC.disBetCyl*(sC.posOfFirstCyl+sC.posOfLastCyl+0.5f)/2) - sC.cylH/2));
+        boxTrans.setTranslation(new Vector3f(0f, sC.vertPos+sC.cylRad*1.5f+(sC.wBoxHeight), (sC.disBetCyl*(sC.posOfFirstCyl+sC.posOfLastCyl+0.5f)/2) - sC.cylH/2 - dzRoof));
         sC.setBoxPos.get(3).setTransform(boxTrans);
 
-        dxRoof += 0.1f;
+        dzRoof += 0.1f;
 
         return true;
     }
@@ -212,13 +232,14 @@ public class SafeInteraction
     public void stepBack()
     //
     {
-        if(gameEnded == 0 && isStepBack == false) {
+        if(gameEnded == 0 && isHintSB == false) {
             if (!clockwiseDir) {
                 angleMain -= Math.PI/5;
                 angle -= Math.PI/5;
                 rotateCyl();
                 stepNum -= 2;
                 checkKey();
+                dispActNums();
             }
             else {
                 angleMain += Math.PI/5;
@@ -226,10 +247,31 @@ public class SafeInteraction
                 rotateCyl();
                 stepNum -= 2;
                 checkKey();
+                dispActNums();
             }
 
-            isStepBack = true;
+            isHintSB = true;
         }
+    }
+
+
+    public boolean giveNum()
+    //
+    {
+        if(gameEnded == 0 && whatCyl != 0) {
+            if (dt >= 10.0f) {
+                dispActNums();
+
+                return false;
+            }
+
+            sC.dispNums.get(whatCyl-1).setString(Integer.toString(sC.password.get(whatCyl-1)));
+            dt += 0.1f;
+
+            return true;
+        }
+
+        return false;
     }
 
 

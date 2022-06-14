@@ -4,13 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c1a41b83-1d09-47eb-abfe-ab797919a7b5" name="Changes" comment="Added winning box animation. Small fixes in code">
-      <change afterPath="$PROJECT_DIR$/img/case.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/img/sky.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/img/wood.jpg" afterDir="false" />
+    <list default="true" id="c1a41b83-1d09-47eb-abfe-ab797919a7b5" name="Changes" comment="Added info window and realization of step back">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/case.jfif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/wood.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/SafeCreation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/SafeCreation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/SafeInteraction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/SafeInteraction.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/SafeUniverse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/SafeUniverse.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
