@@ -1,5 +1,7 @@
 import javax.media.j3d.*;
+import javax.swing.*;
 import javax.vecmath.*;
+import java.awt.*;
 
 
 public class SafeInteraction
@@ -20,11 +22,13 @@ public class SafeInteraction
     public float dyWBox = 0;
     public float dxRoof = 0f;
 
+    public boolean isStepBack = false;
+
     public boolean leftButton;
     public boolean rightButton;
-    PointSound tick;
-    PointSound tickNext;
-    SafeCreation sC;
+    public PointSound tick;
+    public PointSound tickNext;
+    public SafeCreation sC;
 
 
     public void safeGame(boolean lb, boolean rb, PointSound t, PointSound tn, SafeCreation safeCreation)
@@ -188,7 +192,8 @@ public class SafeInteraction
             tick.setEnable(true);
     }
 
-    public boolean hint()
+
+    public boolean hintFloor()
     //
     {
         if (dxRoof >= sC.cylRad*4f)
@@ -203,4 +208,37 @@ public class SafeInteraction
         return true;
     }
 
+
+    public void stepBack()
+    //
+    {
+        if(gameEnded == 0 && isStepBack == false) {
+            if (!clockwiseDir) {
+                angleMain -= Math.PI/5;
+                angle -= Math.PI/5;
+                rotateCyl();
+                stepNum -= 2;
+                checkKey();
+            }
+            else {
+                angleMain += Math.PI/5;
+                angle += Math.PI/5;
+                rotateCyl();
+                stepNum -= 2;
+                checkKey();
+            }
+
+            isStepBack = true;
+        }
+    }
+
+
+    public void info(Component window)
+    //
+    {
+        String info = "Tutaj znajdzie się info o: \n - zasadach \n - autorach";
+        String header = "About this project";
+
+        JOptionPane.showMessageDialog(window, info, header, JOptionPane.INFORMATION_MESSAGE);
+    }
 }
