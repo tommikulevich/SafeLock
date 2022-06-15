@@ -45,11 +45,14 @@ public class SafeCreation
     public Float[][] caseWallsPos = new Float[6][3];
     public float preDefDim = 0.1f;
 
+    public SafeSaving sS;
 
-    public SafeCreation(int numOfCylinders)
+    public SafeCreation(int numOfCylinders, SafeSaving safeSaving)
     {
         numOfCyl = numOfCylinders;
         posOfFirstCyl = numOfCyl/2.0f;
+
+        sS = safeSaving;
 
         createCylinders();
         createWinningBox();
@@ -148,6 +151,9 @@ public class SafeCreation
             temp = (temp + decodingKey.get(i)) % 10;
             password.add(temp);
         }
+
+        //sending to sS generated combination
+        sS.throwDecodingKey(password);
 
         // creating transformations of self rotation for cylinders
         ArrayList<Transform3D>selfRotCyl = new ArrayList<>();

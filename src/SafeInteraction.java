@@ -30,8 +30,10 @@ public class SafeInteraction
     public PointSound tickNext;
     public SafeCreation sC;
 
+    public SafeSaving sS;
 
-    public void safeGame(boolean lb, boolean rb, PointSound t, PointSound tn, SafeCreation safeCreation)
+
+    public void safeGame(boolean lb, boolean rb, PointSound t, PointSound tn, SafeCreation safeCreation, SafeSaving safeSaving)
     //
     {
         leftButton = lb;
@@ -39,6 +41,7 @@ public class SafeInteraction
         tick = t;
         tickNext = tn;
         sC = safeCreation;
+        sS = safeSaving;
 
         if(gameEnded == 0)
             if(whatCyl != sC.numOfCyl || !nextCyl)     // in other words: if the user has not reached the situation
@@ -53,8 +56,11 @@ public class SafeInteraction
 
             dyWBox += 0.1f;
 
-            if (dyWBox >= sC.cylRad*1.5f)
+            if (dyWBox >= sC.cylRad*1.5f) {
                 gameEnded = 2;
+                //sending to sS current time
+                sS.setStopTime(System.currentTimeMillis());
+            }
         }
     }
 
@@ -91,7 +97,8 @@ public class SafeInteraction
                 checkKey();
                 dispActNums();
             }
-
+            //sending to sS information about pushed button
+            sS.throwArrow("L");
             latchLeft = false;
         }
 
@@ -124,7 +131,8 @@ public class SafeInteraction
                 checkKey();
                 dispActNums();
             }
-
+            //sending to sS information about pushed button
+            sS.throwArrow("R");
             latchRight = false;
         }
     }

@@ -54,7 +54,7 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
 
     public SafeCreation sC;
     public SafeInteraction sI;
-
+    public SafeSaving sS;
 
     public SafeUniverse()
     // A panel holding a 3D canvas
@@ -266,6 +266,8 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
 
         if(action == startButton) {
             initializeGame();
+            //sending to sS current system time
+            sS.setStartTime(System.currentTimeMillis());
             isHint = false;
 
             if(!clock.isRunning())
@@ -284,6 +286,10 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
         if(action == setDefaultViewButton)
             initUserPosition();
 
+        if(action == saveButton)
+            //creating save
+            sS.createSave();
+
         if(action == hintButton && clock.isRunning() && !isHint) {
             switch(whatHint)
             {
@@ -301,16 +307,25 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
             isHint = true;
         }
 
-        if(isHintLI)
+        if(isHintLI) {
             isHintLI = sI.lookInside();
+            //sending to sS information about use of hint
+            sS.hintWasUsed();
+        }
 
-        if(isHintGN)
+        if(isHintGN) {
             isHintGN = sI.giveNum();
+            //sending to sS information about use of hint
+            sS.hintWasUsed();
+        }
 
-        if(isHintSB)
+        if(isHintSB) {
             isHintSB = sI.stepBack();
-
-        sI.safeGame(leftButton, rightButton, tick, tickNext, sC);
+            //sending to sS information about use of hint
+            sS.hintWasUsed();
+        }
+        //sending sS object to SafeInteraction
+        sI.safeGame(leftButton, rightButton, tick, tickNext, sC, sS);
     }
 
     public void initializeGame()
@@ -343,7 +358,9 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
 
         su.addBranchGraph(sceneBG);
 
-        sC = new SafeCreation(numOfCylinders);
+        sS = new SafeSaving();
+        //sending sS object to SafeCreation
+        sC = new SafeCreation(numOfCylinders, sS);
         sC.addElements(sceneBG);                        // adding cylinders, winning box and case
 
         sI = new SafeInteraction();
