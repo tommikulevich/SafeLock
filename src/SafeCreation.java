@@ -27,13 +27,13 @@ public class SafeCreation
     public Text2D numHint;
 
     // parameters of cylinders
-    public int numOfCyl = 6;
+    public int numOfCyl;
     public float disBetCyl = 1.0f;
     public float vertPos = 3.0f;
     public float cylRad = 1.5f;
     public float cylH = 0.5f;
     public float axRad = 0.1f;
-    public float posOfFirstCyl = numOfCyl/2.0f;
+    public float posOfFirstCyl;
     public float posOfLastCyl = 0;
 
     // parameters of winning box
@@ -47,8 +47,11 @@ public class SafeCreation
     public float preDefDim = 0.1f;
 
 
-    public SafeCreation()
+    public SafeCreation(int numOfCylinders)
     {
+        numOfCyl = numOfCylinders;
+        posOfFirstCyl = numOfCyl/2.0f;
+
         createCylinders();
         createWinningBox();
         createCase();

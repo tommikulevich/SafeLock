@@ -20,6 +20,7 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
 
     public static final Point3d USERPOS = new Point3d(-13,10,13); // initial user position
 
+    public Canvas3D canvas3D;
     public SimpleUniverse su;
     public BranchGroup sceneBG;
     public BoundingSphere bounds;
@@ -28,13 +29,13 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
 
     public String fileTick = "tick.wav";
     public String fileTickNext = "tickNext.wav";
-    public PointSound tick = new PointSound();
-    public PointSound tickNext = new PointSound();
+    public PointSound tick;
+    public PointSound tickNext;
 
     public JPanel panel1;
     public JPanel panel2;
 
-    public Timer clock1;
+    public Timer clock;
     public boolean leftButton = false, rightButton = false;
     public Button infoButton;
     public Button saveButton;
@@ -43,12 +44,13 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
     public Button pauseButton;
     public Button setDefaultViewButton;
     public Button hintButton;
-    public Button lookInsideButton;
-    public Button stepBackButton;
-    public Button giveNumButton;
 
-    boolean isHintLI;
-    boolean isHintGN;
+    public boolean isHint;
+    public boolean isHintLI;
+    public boolean isHintGN;
+    public boolean isHintSB;
+    public int whatHint = 0;
+    public int numOfCylinders = 0;
 
     public SafeCreation sC;
     public SafeInteraction sI;
@@ -62,29 +64,17 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
         setPreferredSize(new Dimension(PWIDTH, PHEIGHT));
 
         GraphicsConfiguration config = SimpleUniverse.getPreferredConfiguration();
-        Canvas3D canvas3D = new Canvas3D(config);
+        canvas3D = new Canvas3D(config);
         add("Center", canvas3D);
         canvas3D.addKeyListener(this);
 
-        createButtons();                   // adding buttons
-
-        clock1 = new Timer(10, this);
+        createButtons();
+        panel2.setVisible(false);
 
         canvas3D.setFocusable(true);    // giving focus to the canvas
         canvas3D.requestFocus();
 
-        su = new SimpleUniverse(canvas3D);
-        vp = su.getViewingPlatform();
-        steerTG = vp.getViewPlatformTransform();
-        createSceneGraph();
-        initUserPosition();        // setting user's viewpoint
-        orbitControls(canvas3D);   // controlling the movement of the viewpoint
-
-        // create a sounds mixer to use our sounds with and initialise it
-        JavaSoundMixer myMixer = new JavaSoundMixer(su.getViewer().getPhysicalEnvironment());
-        myMixer.initialize();
-
-        su.addBranchGraph(sceneBG);
+        clock = new Timer(10, this);
     }
 
 
@@ -92,19 +82,17 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
     // Initializing the scene
     {
         sceneBG = new BranchGroup();
+        sceneBG.setCapability(BranchGroup.ALLOW_CHILDREN_EXTEND);
         bounds = new BoundingSphere(new Point3d(0,0,0), BOUNDSIZE);
 
         lightScene();                                   // adding the lights
         addBackground();                                // adding the sky
         sceneBG.addChild(new SafePlatform().getBG());   // adding the floor
 
+        tick = new PointSound();
+        tickNext = new PointSound();
         addSounds(tick, fileTick);                      // adding the sounds
         addSounds(tickNext, fileTickNext);
-
-        sC = new SafeCreation();
-        sC.addElements(sceneBG);                        // adding cylinders, winning box and case
-
-        sI = new SafeInteraction();
 
         sceneBG.compile();      // fixing the scene
     }
@@ -114,43 +102,35 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
     // Adding buttons
     {
         infoButton = new Button("Info");
-        saveButton = new Button("Save");
         levelChoice = new Choice();
         startButton = new Button("Start New Game");
-        pauseButton = new Button("Pause/Continue");
-        setDefaultViewButton = new Button("Default View");
-        hintButton = new Button("Hint (doesn't work)");
-        lookInsideButton = new Button("Look Inside");
-        stepBackButton = new Button("Step Back");
-        giveNumButton = new Button("Give Num");
 
         levelChoice.add("Easy");
         levelChoice.add("Medium");
         levelChoice.add("Hard");
+        levelChoice.select(levelChoice.getItem(whatHint));
 
         panel1 = new JPanel();
         panel1.add(infoButton);
-        panel1.add(saveButton);
-        panel1.add(startButton);
         panel1.add(levelChoice);
+        panel1.add(startButton);
         add(""+"North", panel1);
 
         infoButton.addActionListener(this);
         infoButton.addKeyListener(this);
-        saveButton.addActionListener(this);
-        saveButton.addKeyListener(this);
         startButton.addActionListener(this);
         startButton.addKeyListener(this);
-        // in fact levelChoice doesn't require actionListener
-        // to get it actual value we can use levelChoice.getItem(levelChoice.getSelectedIndex());
+
+        pauseButton = new Button("Pause/Continue");
+        setDefaultViewButton = new Button("Default View");
+        hintButton = new Button("Hint");
+        saveButton = new Button("Save");
 
         panel2 = new JPanel();
         panel2.add(pauseButton);
         panel2.add(setDefaultViewButton);
-        //panel2.add(hintButton);
-        panel2.add(lookInsideButton);
-        panel2.add(stepBackButton);
-        panel2.add(giveNumButton);
+        panel2.add(hintButton);
+        panel2.add(saveButton);
 
         add(""+"South", panel2);
 
@@ -160,13 +140,10 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
         setDefaultViewButton.addActionListener(this);
         hintButton.addKeyListener(this);
         hintButton.addActionListener(this);
-        lookInsideButton.addKeyListener(this);
-        lookInsideButton.addActionListener(this);
-        stepBackButton.addKeyListener(this);
-        stepBackButton.addActionListener(this);
-        giveNumButton.addKeyListener(this);
-        giveNumButton.addActionListener(this);
+        saveButton.addActionListener(this);
+        saveButton.addKeyListener(this);
     }
+
 
     private void lightScene()
     // Adding one ambient light and 2 directional lights
@@ -287,15 +264,19 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
     public void actionPerformed(ActionEvent e) {
         Object action = e.getSource();
 
-        if(action == startButton)
-            if(!clock1.isRunning())
-                clock1.start();
+        if(action == startButton) {
+            initializeGame();
+            isHint = false;
+
+            if(!clock.isRunning())
+                clock.start();
+        }
 
         if(action == pauseButton)
-            if(clock1.isRunning())
-                clock1.stop();
+            if(clock.isRunning())
+                clock.stop();
             else
-                clock1.start();
+                clock.start();
 
         if(action == infoButton)
             sI.info(this);
@@ -303,24 +284,89 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
         if(action == setDefaultViewButton)
             initUserPosition();
 
-        if(action == lookInsideButton)
-            if(clock1.isRunning())
-                isHintLI = true;
+        if(action == hintButton && clock.isRunning() && !isHint) {
+            switch(whatHint)
+            {
+                case 0:
+                    isHintLI = true;
+                    break;
+                case 1:
+                    isHintGN = true;
+                    break;
+                case 2:
+                    isHintSB = true;
+                    break;
+            }
+
+            isHint = true;
+        }
 
         if(isHintLI)
             isHintLI = sI.lookInside();
 
-        if(action == stepBackButton)
-            if(clock1.isRunning())
-                sI.stepBack();
-
-        if(action == giveNumButton)
-            if(clock1.isRunning())
-                isHintGN = true;
-
         if(isHintGN)
             isHintGN = sI.giveNum();
 
+        if(isHintSB)
+            isHintSB = sI.stepBack();
+
         sI.safeGame(leftButton, rightButton, tick, tickNext, sC);
+    }
+
+    public void initializeGame()
+    //
+    {
+        setLevel();
+        removeAll();
+        updateUI();
+
+        GraphicsConfiguration config = SimpleUniverse.getPreferredConfiguration();
+        canvas3D = new Canvas3D(config);
+        add("Center", canvas3D);
+        canvas3D.addKeyListener(this);
+
+        createButtons();
+
+        canvas3D.setFocusable(true);    // giving focus to the canvas
+        canvas3D.requestFocus();
+
+        su = new SimpleUniverse(canvas3D);
+        vp = su.getViewingPlatform();
+        steerTG = vp.getViewPlatformTransform();
+        createSceneGraph();
+        initUserPosition();        // setting user's viewpoint
+        orbitControls(canvas3D);   // controlling the movement of the viewpoint
+
+        // create a sounds mixer to use our sounds with and initialise it
+        JavaSoundMixer myMixer = new JavaSoundMixer(su.getViewer().getPhysicalEnvironment());
+        myMixer.initialize();
+
+        su.addBranchGraph(sceneBG);
+
+        sC = new SafeCreation(numOfCylinders);
+        sC.addElements(sceneBG);                        // adding cylinders, winning box and case
+
+        sI = new SafeInteraction();
+    }
+
+
+    public void setLevel()
+    //
+    {
+        switch(levelChoice.getSelectedItem())
+        {
+            case "Easy":
+                numOfCylinders = 5;
+                whatHint = 0;
+                break;
+            case "Medium":
+                numOfCylinders = 7;
+                whatHint = 1;
+                break;
+            case "Hard":
+                numOfCylinders = 9;
+                whatHint = 2;
+                break;
+        }
     }
 }

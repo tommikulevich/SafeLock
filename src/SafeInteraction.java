@@ -24,8 +24,6 @@ public class SafeInteraction
     public float dzRoof = 0;
     public float dt = 0;
 
-    public boolean isHintSB = false;
-
     public boolean leftButton;
     public boolean rightButton;
     public PointSound tick;
@@ -229,32 +227,6 @@ public class SafeInteraction
     }
 
 
-    public void stepBack()
-    //
-    {
-        if(gameEnded == 0 && isHintSB == false) {
-            if (!clockwiseDir) {
-                angleMain -= Math.PI/5;
-                angle -= Math.PI/5;
-                rotateCyl();
-                stepNum -= 2;
-                checkKey();
-                dispActNums();
-            }
-            else {
-                angleMain += Math.PI/5;
-                angle += Math.PI/5;
-                rotateCyl();
-                stepNum -= 2;
-                checkKey();
-                dispActNums();
-            }
-
-            isHintSB = true;
-        }
-    }
-
-
     public boolean giveNum()
     //
     {
@@ -272,6 +244,34 @@ public class SafeInteraction
         }
 
         return false;
+    }
+
+
+    public boolean stepBack()
+    //
+    {
+        if(gameEnded == 0) {
+            if (!clockwiseDir) {
+                angleMain -= Math.PI/5;
+                angle -= Math.PI/5;
+                rotateCyl();
+                stepNum -= 2;
+                checkKey();
+                dispActNums();
+            }
+            else {
+                angleMain += Math.PI/5;
+                angle += Math.PI/5;
+                rotateCyl();
+                stepNum -= 2;
+                checkKey();
+                dispActNums();
+            }
+
+            return false;
+        }
+
+        return true;
     }
 
 
