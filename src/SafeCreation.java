@@ -24,7 +24,6 @@ public class SafeCreation
     public ArrayList<Integer> stepsKey = new ArrayList<>();
     public ArrayList<Integer> password = new ArrayList<>();
     public ArrayList<Text2D>  dispNums = new ArrayList<>();
-    public Text2D numHint;
 
     // parameters of cylinders
     public int numOfCyl;
@@ -149,9 +148,6 @@ public class SafeCreation
             temp = (temp + decodingKey.get(i)) % 10;
             password.add(temp);
         }
-
-        for(int i = 0; i < numOfCyl; i++)
-            System.out.println(password.get(i));
 
         // creating transformations of self rotation for cylinders
         ArrayList<Transform3D>selfRotCyl = new ArrayList<>();
@@ -355,7 +351,14 @@ public class SafeCreation
 
         // creating field for password
         Box numBox = new Box(preDefDim+0.01f, 0.7f, zDim+0.01f, Box.GENERATE_NORMALS| Box.GENERATE_TEXTURE_COORDS, metalStyle);
-        caseBoxes.get(1).addChild(numBox);
+
+        Transform3D numBoxRot = new Transform3D();
+        numBoxRot.rotY(Math.PI);
+
+        TransformGroup fieldTransform = new TransformGroup(numBoxRot);
+        fieldTransform.addChild(numBox);
+
+        caseBoxes.get(4).addChild(fieldTransform);
 
         // creating numbers on this field
         float temp = -zDim;

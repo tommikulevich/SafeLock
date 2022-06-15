@@ -18,7 +18,7 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
     private static final int PHEIGHT = 512;
     public static final int BOUNDSIZE = 100;   // larger than the world
 
-    public static final Point3d USERPOS = new Point3d(-13,10,13); // initial user position
+    public static final Point3d USERPOS = new Point3d(13,10,13); // initial user position
 
     public Canvas3D canvas3D;
     public SimpleUniverse su;

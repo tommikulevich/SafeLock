@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c1a41b83-1d09-47eb-abfe-ab797919a7b5" name="Changes" comment="Empty commit">
+    <list default="true" id="c1a41b83-1d09-47eb-abfe-ab797919a7b5" name="Changes" comment="Added new game initialization (with level choice)">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/SafeCreation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/SafeCreation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/SafeInteraction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/SafeInteraction.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/SafeUniverse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/SafeUniverse.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -197,7 +196,14 @@
       <option name="project" value="LOCAL" />
       <updated>1655271602334</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Added new game initialization (with level choice)">
+      <created>1655281047358</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1655281047358</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -236,7 +242,8 @@
     <MESSAGE value=" Added some comments. Added new sounds. Added calculation of password. Small changes and code reorganizations" />
     <MESSAGE value="Changed buttons. Changed position in &quot;default view&quot; and animation in &quot;look inside&quot;. Added field with actual combination values. Added new hint (giving a num of combination for a few seconds). Small changes in code" />
     <MESSAGE value="Empty commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="Empty commit" />
+    <MESSAGE value="Added new game initialization (with level choice)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added new game initialization (with level choice)" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
