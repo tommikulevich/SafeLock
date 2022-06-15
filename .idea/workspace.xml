@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c1a41b83-1d09-47eb-abfe-ab797919a7b5" name="Changes" comment="Added info window and realization of step back">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="c1a41b83-1d09-47eb-abfe-ab797919a7b5" name="Changes" comment="Changed buttons. Changed position in &quot;default view&quot; and animation in &quot;look inside&quot;. Added field with actual combination values. Added new hint (giving a num of combination for a few seconds). Small changes in code">
+      <change afterPath="$PROJECT_DIR$/img/metal.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/SafeCreation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/SafeCreation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/SafeInteraction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/SafeInteraction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/SafeUniverse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/SafeUniverse.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -183,7 +181,14 @@
       <option name="project" value="LOCAL" />
       <updated>1654978750036</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Changed buttons. Changed position in &quot;default view&quot; and animation in &quot;look inside&quot;. Added field with actual combination values. Added new hint (giving a num of combination for a few seconds). Small changes in code">
+      <created>1655244191198</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1655244191198</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -220,7 +225,8 @@
     <MESSAGE value="Added lines on cylinders. Changed textures" />
     <MESSAGE value="Added mechanism of alternating rotation of cylinders (without history of steps), so our program starts to look like a game. Small changes and code optimizations." />
     <MESSAGE value=" Added some comments. Added new sounds. Added calculation of password. Small changes and code reorganizations" />
-    <option name="LAST_COMMIT_MESSAGE" value=" Added some comments. Added new sounds. Added calculation of password. Small changes and code reorganizations" />
+    <MESSAGE value="Changed buttons. Changed position in &quot;default view&quot; and animation in &quot;look inside&quot;. Added field with actual combination values. Added new hint (giving a num of combination for a few seconds). Small changes in code" />
+    <option name="LAST_COMMIT_MESSAGE" value="Changed buttons. Changed position in &quot;default view&quot; and animation in &quot;look inside&quot;. Added field with actual combination values. Added new hint (giving a num of combination for a few seconds). Small changes in code" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
