@@ -5,7 +5,7 @@ import java.awt.*;
 public class SafeLock3D extends JFrame
 {
 
-    SafeUniverse safeU = new SafeUniverse();
+    SafeUniverse sU = new SafeUniverse();
 
     public SafeLock3D()
     {
@@ -13,11 +13,11 @@ public class SafeLock3D extends JFrame
 
         Container c = getContentPane();
         c.setLayout(new BorderLayout());    // panel holding the 3D canvas
-        c.add(safeU, BorderLayout.CENTER);
+        c.add(sU, BorderLayout.CENTER);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         pack();
-        setResizable(true);                // fixed size display
+        setResizable(true);
         setVisible(true);
     }
 

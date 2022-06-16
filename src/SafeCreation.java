@@ -10,22 +10,10 @@ import static javax.media.j3d.TransformGroup.ALLOW_TRANSFORM_WRITE;
 
 
 public class SafeCreation
-//
 {
-    public ArrayList<TransformGroup>rotCyl = new ArrayList<>();
-    public TransformGroup tg_rot;
-    public TransformGroup moveBox;
-    public BranchGroup tg_rotBG = new BranchGroup();
-    public BranchGroup moveBoxBG = new BranchGroup();
-    public BranchGroup caseBoxBG = new BranchGroup();
 
-    // game parameters
-    public ArrayList<Integer> decodingKey = new ArrayList<>();
-    public ArrayList<Integer> stepsKey = new ArrayList<>();
-    public ArrayList<Integer> password = new ArrayList<>();
-    public ArrayList<Text2D>  dispNums = new ArrayList<>();
-
-    // parameters of cylinders
+    // Parameters of cylinders
+    public ArrayList<Cylinder>cylinders = new ArrayList<>();
     public int numOfCyl;
     public float disBetCyl = 1.0f;
     public float vertPos = 3.0f;
@@ -35,58 +23,109 @@ public class SafeCreation
     public float posOfFirstCyl;
     public float posOfLastCyl = 0;
 
-    // parameters of winning box
+    // Parameters of winning box
     public float wBoxHeight = 0.75f;
 
-    // parameters of case
+    // Parameters of case
     public ArrayList<Box> caseBoxes = new ArrayList<>();
     public ArrayList<TransformGroup> setBoxPos = new ArrayList<>();
     public Float[][] caseDim = new Float[6][3];
     public Float[][] caseWallsPos = new Float[6][3];
     public float preDefDim = 0.1f;
 
+    // Texture parameters
+    public Appearance lightMetal = new Appearance();
+    public Appearance darkMetal = new Appearance();
+    public Appearance veryDarkMetal = new Appearance();
+    public TextureLoader loader;
+    public Texture2D texture;
+    public ImageComponent2D image;
+
+    // Transform groups and branches
+    public ArrayList<TransformGroup>rotCyl = new ArrayList<>();
+    public TransformGroup tgRot;
+    public TransformGroup moveBox;
+    public BranchGroup tgRotBG = new BranchGroup();
+    public BranchGroup moveBoxBG = new BranchGroup();
+    public BranchGroup caseBoxBG = new BranchGroup();
+
+    // Game parameters
+    public ArrayList<Integer> decodingKey = new ArrayList<>();
+    public ArrayList<Integer> stepsKey = new ArrayList<>();
+    public ArrayList<Integer> password = new ArrayList<>();
+    public ArrayList<Text2D>  dispNums = new ArrayList<>();
+
+    // Object of saving
     public SafeSaving sS;
 
+
     public SafeCreation(int numOfCylinders, SafeSaving safeSaving)
+    // Safe lock creation initialization
     {
         numOfCyl = numOfCylinders;
         posOfFirstCyl = numOfCyl/2.0f;
 
         sS = safeSaving;
 
-        createCylinders();
-        createWinningBox();
-        createCase();
+        loadTextures();         // loading textures
+        createCylinders();      // creating all cylinders
+        createWinningBox();     // creating winning box
+        createCase();           // creating safe case
     }
 
 
-    public void createCylinders()
-    // Creating floating cylinders
+    public void loadTextures()
+    // Loading textures
     {
-        // loading textures
-        Appearance woodStyle = new Appearance();
-        TextureLoader loader = new TextureLoader("img/wood.jpg", null);
-        ImageComponent2D image = loader.getImage();
+        // light metal texture
+        loader = new TextureLoader("img/lightMetal.jpg", null);
+        image = loader.getImage();
 
-        Texture2D wood = new Texture2D(Texture.BASE_LEVEL, Texture.RGBA, image.getWidth(), image.getHeight());
-        wood.setImage(0, image);
-        wood.setBoundaryModeS(Texture.WRAP);
-        wood.setBoundaryModeT(Texture.WRAP);
+        texture = new Texture2D(Texture.BASE_LEVEL, Texture.RGBA, image.getWidth(), image.getHeight());
+        texture.setImage(0, image);
+        texture.setBoundaryModeS(Texture.WRAP);
+        texture.setBoundaryModeT(Texture.WRAP);
 
-        woodStyle.setTexture(wood);
+        lightMetal.setTexture(texture);
 
-        // creating cylinders
-        ArrayList<Cylinder>cylinders = new ArrayList<>();
+        // dark metal texture
+        loader = new TextureLoader("img/darkMetal.jpg", null);
+        image = loader.getImage();
+
+        texture = new Texture2D(Texture.BASE_LEVEL, Texture.RGBA, image.getWidth(), image.getHeight());
+        texture.setImage(0, image);
+        texture.setBoundaryModeS(Texture.WRAP);
+        texture.setBoundaryModeT(Texture.WRAP);
+
+        darkMetal.setTexture(texture);
+
+        // very dark metal texture
+        loader = new TextureLoader("img/veryDarkMetal.jpg", null);
+        image = loader.getImage();
+
+        texture = new Texture2D(Texture.BASE_LEVEL, Texture.RGBA, image.getWidth(), image.getHeight());
+        texture.setImage(0, image);
+        texture.setBoundaryModeS(Texture.WRAP);
+        texture.setBoundaryModeT(Texture.WRAP);
+
+        veryDarkMetal.setTexture(texture);
+
+    }
+
+    public void createCylinders()
+    // Creating main cylinder and mechanism cylinders
+    {
+        // ----- MAIN CYLINDER ------
 
         // setting params for main cylinder
-        cylinders.add(new Cylinder(cylRad*1.5f, cylH, Cylinder.GENERATE_NORMALS| Cylinder.GENERATE_TEXTURE_COORDS, 80, 80, woodStyle));
+        cylinders.add(new Cylinder(cylRad*1.5f, cylH, Cylinder.GENERATE_NORMALS| Cylinder.GENERATE_TEXTURE_COORDS, 80, 80, veryDarkMetal));
 
         // creating lines on main cylinder
         for (int i = 0; i < 5; i++) {
             Appearance app = new Appearance();
-            app.setColoringAttributes(new ColoringAttributes(new Color3f(Color.BLACK), ColoringAttributes.NICEST));
+            app.setColoringAttributes(new ColoringAttributes(new Color3f(Color.LIGHT_GRAY), ColoringAttributes.NICEST));
 
-            Box line = new Box(axRad, cylH/1.9f, cylRad*1.2f, app);
+            Box line = new Box(axRad/1.5f, cylH/1.9f, cylRad*1.2f, app);
 
             Transform3D lineRot = new Transform3D();
             lineRot.rotY(i*Math.PI/5);
@@ -99,7 +138,7 @@ public class SafeCreation
 
         // creating numbers on main cylinder
         for (int i = 0; i < 10; i++){
-            Text2D num = new Text2D(Integer.toString(i), new Color3f(Color.BLACK), "SansSerif", 100, Font.BOLD);
+            Text2D num = new Text2D(Integer.toString(i), new Color3f(Color.WHITE), "SansSerif", 100, Font.BOLD);
 
             Transform3D numPos = new Transform3D();
             numPos.set(new Vector3f(-0.1f, cylRad*1.2f, cylH/1.9f));
@@ -120,25 +159,11 @@ public class SafeCreation
             cylinders.get(0).addChild(numTransform2);
         }
 
-        // setting params of other cylinders
-        for(int i = 1; i <= numOfCyl; i++)
-            cylinders.add(new Cylinder(cylRad, cylH, Cylinder.GENERATE_NORMALS| Cylinder.GENERATE_TEXTURE_COORDS, 80, 80, woodStyle));
+        // adding cosmetic cylinder
+        cylinders.get(0).addChild(new Cylinder(cylRad, cylH+0.5f, Cylinder.GENERATE_NORMALS| Cylinder.GENERATE_TEXTURE_COORDS, 80, 80, veryDarkMetal));
 
-        // creating lines on other cylinders
-        for (int i = 1; i <= numOfCyl; i++){
-            Appearance app = new Appearance();
-            app.setColoringAttributes(new ColoringAttributes(new Color3f(Color.BLACK), ColoringAttributes.NICEST));
 
-            Box line = new Box(axRad, cylH/1.9f, cylRad/2.0f, app);
-
-            Transform3D linePos = new Transform3D();
-            linePos.set(new Vector3f(0.0f, 0.0f, -cylRad/2));
-
-            TransformGroup lineTransform = new TransformGroup(linePos);
-            lineTransform.addChild(line);
-
-            cylinders.get(i).addChild(lineTransform);
-        }
+        // ----- KEYS ------
 
         // filling list of decoding key for cylinders
         for(int i = 0; i < numOfCyl; i++)
@@ -154,6 +179,32 @@ public class SafeCreation
 
         //sending to sS generated combination
         sS.throwDecodingKey(password);
+
+
+        // ----- MECHANISM CYLINDERS ------
+
+        // setting params of mechanism cylinders
+        for(int i = 1; i <= numOfCyl; i++)
+            cylinders.add(new Cylinder(cylRad, cylH, Cylinder.GENERATE_NORMALS| Cylinder.GENERATE_TEXTURE_COORDS, 80, 80, lightMetal));
+
+        // creating lines on mechanism cylinders
+        for (int i = 1; i <= numOfCyl; i++){
+            Appearance app = new Appearance();
+            app.setColoringAttributes(new ColoringAttributes(new Color3f(Color.BLACK), ColoringAttributes.NICEST));
+
+            Box line = new Box(axRad, cylH/1.9f, cylRad/2.0f, app);
+
+            Transform3D linePos = new Transform3D();
+            linePos.set(new Vector3f(0.0f, 0.0f, -cylRad/2));
+
+            TransformGroup lineTransform = new TransformGroup(linePos);
+            lineTransform.addChild(line);
+
+            cylinders.get(i).addChild(lineTransform);
+        }
+
+
+        // ----- 3D TRANSFORMATIONS FOR CYLINDERS ------
 
         // creating transformations of self rotation for cylinders
         ArrayList<Transform3D>selfRotCyl = new ArrayList<>();
@@ -181,13 +232,19 @@ public class SafeCreation
             posCyl.add(k);
         }
 
+
+        // ----- AXIS ------
+
         // setting params for axis by axis algorithm
-        cylinders.add(new Cylinder(axRad, disBetCyl*(posOfFirstCyl-posOfLastCyl-1), Cylinder.GENERATE_NORMALS| Cylinder.GENERATE_TEXTURE_COORDS, 80, 80, woodStyle));
+        cylinders.add(new Cylinder(axRad, disBetCyl*(posOfFirstCyl-posOfLastCyl-1), Cylinder.GENERATE_NORMALS| Cylinder.GENERATE_TEXTURE_COORDS, 80, 80, lightMetal));
 
         // creating and setting position transformation for axis
         Transform3D p = new Transform3D();
         p.set(new Vector3f(0, disBetCyl*(posOfFirstCyl+posOfLastCyl+1)/2,-vertPos));
         posCyl.add(p);
+
+
+        // ----- GROUP TRANSFORMATIONS FOR CYLINDERS AND AXIS ------
 
         // creating transformation groups and matching with transformation
         ArrayList<TransformGroup>tg = new ArrayList<>();
@@ -209,7 +266,7 @@ public class SafeCreation
         // rotation transformation
         Transform3D tmp_rot = new Transform3D();
         tmp_rot.rotX(Math.PI/2);
-        tg_rot = new TransformGroup(tmp_rot);
+        tgRot = new TransformGroup(tmp_rot);
 
         // matching transformation groups with rotation
         for (int i = 0; i <= numOfCyl+1; i++){
@@ -217,10 +274,10 @@ public class SafeCreation
             tgSelfRot.get(i).addChild(cylinders.get(i));
             rotCyl.get(i).addChild(tgSelfRot.get(i));
             tg.get(i).addChild(rotCyl.get(i));
-            tg_rot.addChild(tg.get(i));
+            tgRot.addChild(tg.get(i));
         }
 
-        tg_rotBG.addChild(tg_rot);
+        tgRotBG.addChild(tgRot);
     }
 
 
@@ -237,18 +294,7 @@ public class SafeCreation
     public void createWinningBox()
     // Creating a winning box
     {
-        Appearance woodStyle = new Appearance();
-        TextureLoader loader = new TextureLoader("img/wood.jpg", null);
-        ImageComponent2D image = loader.getImage();
-
-        Texture2D wood = new Texture2D(Texture.BASE_LEVEL, Texture.RGBA, image.getWidth(), image.getHeight());
-        wood.setImage(0, image);
-        wood.setBoundaryModeS(Texture.WRAP);
-        wood.setBoundaryModeT(Texture.WRAP);
-
-        woodStyle.setTexture(wood);
-
-        Box winningBox = new Box(axRad, wBoxHeight, disBetCyl*(posOfFirstCyl-posOfLastCyl)/2 - preDefDim/2, Box.GENERATE_NORMALS| Box.GENERATE_TEXTURE_COORDS, woodStyle);
+        Box winningBox = new Box(axRad, wBoxHeight, disBetCyl*(posOfFirstCyl-posOfLastCyl)/2 - preDefDim/2, Box.GENERATE_NORMALS| Box.GENERATE_TEXTURE_COORDS, darkMetal);
 
         Transform3D initPos = new Transform3D();
         initPos.set(new Vector3f(0f, vertPos+cylRad*1.5f+(wBoxHeight), disBetCyl*(posOfFirstCyl+posOfLastCyl+0.5f)/2 - cylH/2));
@@ -311,32 +357,9 @@ public class SafeCreation
             frontVsBackWallPos = disBetCyl*posOfLastCyl;
         }
 
-        // setting appearance
-        Appearance woodStyle = new Appearance();
-        TextureLoader loader = new TextureLoader("img/case.jpg", null);
-        ImageComponent2D image = loader.getImage();
-
-        Texture2D wood = new Texture2D(Texture.BASE_LEVEL, Texture.RGBA, image.getWidth(), image.getHeight());
-        wood.setImage(0, image);
-        wood.setBoundaryModeS(Texture.WRAP);
-        wood.setBoundaryModeT(Texture.WRAP);
-
-        woodStyle.setTexture(wood);
-
-        Appearance metalStyle = new Appearance();
-        loader = new TextureLoader("img/metal.jpg", null);
-        image = loader.getImage();
-
-        Texture2D metal = new Texture2D(Texture.BASE_LEVEL, Texture.RGBA, image.getWidth(), image.getHeight());
-        metal.setImage(0, image);
-        metal.setBoundaryModeS(Texture.WRAP);
-        metal.setBoundaryModeT(Texture.WRAP);
-
-        metalStyle.setTexture(metal);
-
         // adding walls in order: floor, roof, left, right, front, back
         for(int i = 0; i < 6; i++) {
-            caseBoxes.add(new Box(caseDim[i][0], caseDim[i][1] , caseDim[i][2], Box.GENERATE_NORMALS| Box.GENERATE_TEXTURE_COORDS, woodStyle));
+            caseBoxes.add(new Box(caseDim[i][0], caseDim[i][1] , caseDim[i][2], Box.GENERATE_NORMALS| Box.GENERATE_TEXTURE_COORDS, lightMetal));
 
             Transform3D initPos = new Transform3D();
             initPos.set(new Vector3f(caseWallsPos[i][0], caseWallsPos[i][1], caseWallsPos[i][2]));
@@ -356,13 +379,13 @@ public class SafeCreation
         caseBoxes.get(3).addChild(line);
 
         // creating field for password
-        Box numBox = new Box(preDefDim+0.01f, 0.7f, zDim+0.01f, Box.GENERATE_NORMALS| Box.GENERATE_TEXTURE_COORDS, metalStyle);
+        Box fieldBox = new Box(preDefDim+0.01f, 0.7f, zDim+0.01f, Box.GENERATE_NORMALS| Box.GENERATE_TEXTURE_COORDS, veryDarkMetal);
 
-        Transform3D numBoxRot = new Transform3D();
-        numBoxRot.rotY(Math.PI);
+        Transform3D fieldBoxRot = new Transform3D();
+        fieldBoxRot.rotY(Math.PI);
 
-        TransformGroup fieldTransform = new TransformGroup(numBoxRot);
-        fieldTransform.addChild(numBox);
+        TransformGroup fieldTransform = new TransformGroup(fieldBoxRot);
+        fieldTransform.addChild(fieldBox);
 
         caseBoxes.get(4).addChild(fieldTransform);
 
@@ -382,16 +405,17 @@ public class SafeCreation
             TransformGroup numTransform = new TransformGroup(numRot);
             numTransform.addChild(dispNums.get(i));
 
-            numBox.addChild(numTransform);
+            fieldBox.addChild(numTransform);
         }
     }
 
 
     public void addElements(BranchGroup sceneBG)
-    //
+    // Adding all elements to our scene - cylinders, winning box and case
     {
-        sceneBG.addChild(tg_rotBG);
+        sceneBG.addChild(tgRotBG);
         sceneBG.addChild(moveBoxBG);
         sceneBG.addChild(caseBoxBG);
     }
+
 }

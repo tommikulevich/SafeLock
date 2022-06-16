@@ -39,7 +39,7 @@ public class SafePlatformInit extends Shape3D
         Appearance app = new Appearance();
 
         PolygonAttributes pa = new PolygonAttributes();
-        pa.setCullFace(PolygonAttributes.CULL_NONE);    // so can see the ColouredTiles from both sides
+        pa.setCullFace(PolygonAttributes.CULL_NONE);        // so can see the ColouredTiles from both sides
         app.setPolygonAttributes(pa);
 
         setAppearance(app);

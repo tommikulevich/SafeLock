@@ -5,36 +5,37 @@ import java.awt.*;
 
 
 public class SafeInteraction
-//
 {
 
-    public boolean latchLeft = false;
-    public boolean latchRight = false;
-
-    // game parameters
-    public float angle = 0;
-    public float angleMain = 0;
+    // Game parameters
     public int whatCyl = 0;
     public int stepNum = 0;
+    public float angleMain = 0;
+    public float angle = 0;
     public int gameEnded = 0;
     public boolean clockwiseDir;
     public boolean nextCyl;
 
+    // Latches after clicking buttons
+    public boolean latchLeft = false;
+    public boolean latchRight = false;
+
+    // Auxiliary variables for animations
     public float dyWBox = 0;
     public float dzRoof = 0;
     public float dt = 0;
 
+    // Variables and objects forwarded from another class
     public boolean leftButton;
     public boolean rightButton;
     public PointSound tick;
     public PointSound tickNext;
     public SafeCreation sC;
-
     public SafeSaving sS;
 
 
     public void safeGame(boolean lb, boolean rb, PointSound t, PointSound tn, SafeCreation safeCreation, SafeSaving safeSaving)
-    //
+    // Game realization
     {
         leftButton = lb;
         rightButton = rb;
@@ -43,12 +44,14 @@ public class SafeInteraction
         sC = safeCreation;
         sS = safeSaving;
 
+        // if the game is not over yet
         if(gameEnded == 0)
-            if(whatCyl != sC.numOfCyl || !nextCyl)     // in other words: if the user has not reached the situation
-                setAngle();                         // when he turns the last cylinder, which is located in the correct position
+            if(whatCyl != sC.numOfCyl || !nextCyl)      // in other words: if the user has not reached the situation
+                setAngle();                             // when he turns the last cylinder, which is located in the correct position
             else
                 gameEnded = 1;
 
+        // if the user has found the right combination, the winning box goes down
         if(gameEnded == 1) {
             Transform3D boxTrans = new Transform3D();
             boxTrans.setTranslation(new Vector3f(0f, (sC.vertPos+sC.cylRad*1.5f+sC.wBoxHeight)- dyWBox, (sC.disBetCyl*(sC.posOfFirstCyl+sC.posOfLastCyl+0.5f)/2) - sC.cylH/2));
@@ -58,8 +61,7 @@ public class SafeInteraction
 
             if (dyWBox >= sC.cylRad*1.5f) {
                 gameEnded = 2;
-                //sending to sS current time
-                sS.setStopTime(System.currentTimeMillis());
+                sS.setStopTime(System.currentTimeMillis());     // sending to sS current time
             }
         }
     }
@@ -97,8 +99,9 @@ public class SafeInteraction
                 checkKey();
                 dispActNums();
             }
-            //sending to sS information about pushed button
-            sS.throwArrow("L");
+
+            sS.throwArrow("L");     // sending to sS information about pushed button
+
             latchLeft = false;
         }
 
@@ -131,8 +134,9 @@ public class SafeInteraction
                 checkKey();
                 dispActNums();
             }
-            //sending to sS information about pushed button
-            sS.throwArrow("R");
+
+            sS.throwArrow("R");     // sending to sS information about pushed button
+
             latchRight = false;
         }
     }
@@ -161,8 +165,7 @@ public class SafeInteraction
     private void rotateCyl()
     // Rotates the main and secondary cylinders
     {
-        int temp = (int)Math.abs(Math.round((angleMain/(Math.PI/5))));
-        if(temp == 10)
+        if((int)Math.abs(Math.round((angleMain/(Math.PI/5)))) == 10)
             angleMain = 0;
 
         Transform3D rotMain = new Transform3D();
@@ -208,7 +211,7 @@ public class SafeInteraction
 
 
     private void dispActNums()
-    //
+    // Setting up and displaying the actual digit entered by the user
     {
         int number = (int)Math.round(angleMain/(Math.PI/5) % 10);
 
@@ -220,7 +223,7 @@ public class SafeInteraction
 
 
     public boolean lookInside()
-    //
+    // Animation of removing the top cover of the box - easy level hint
     {
         if (dzRoof >= sC.disBetCyl*(sC.posOfFirstCyl-sC.posOfLastCyl)+sC.preDefDim)
             return false;
@@ -235,8 +238,8 @@ public class SafeInteraction
     }
 
 
-    public boolean giveNum()
-    //
+    public boolean giveDigit()
+    // Showing the correct combination number within a few seconds - medium level hint
     {
         if(gameEnded == 0 && whatCyl != 0) {
             if (dt >= 10.0f) {
@@ -256,9 +259,9 @@ public class SafeInteraction
 
 
     public boolean stepBack()
-    //
+    // Going back one digit (step back) - hard level hint
     {
-        if(gameEnded == 0) {
+        if(gameEnded == 0 && whatCyl != 0) {
             if (!clockwiseDir) {
                 angleMain -= Math.PI/5;
                 angle -= Math.PI/5;
@@ -284,11 +287,12 @@ public class SafeInteraction
 
 
     public void info(Component window)
-    //
+    // Showing information about the game
     {
         String info = "Tutaj znajdzie się info o: \n - zasadach \n - autorach";
         String header = "About this project";
 
         JOptionPane.showMessageDialog(window, info, header, JOptionPane.INFORMATION_MESSAGE);
     }
+
 }
