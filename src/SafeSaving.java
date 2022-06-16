@@ -35,6 +35,11 @@ public class SafeSaving
         stop = stopTime;
     }
 
+    public String getElapsedTime() {
+        Long elapsedTime = (stop - start)/1000;
+        return elapsedTime.toString();
+    }
+
 
     public void createSave(){
         try {

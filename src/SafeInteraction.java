@@ -289,10 +289,25 @@ public class SafeInteraction
     public void info(Component window)
     // Showing information about the game
     {
-        String info = "Tutaj znajdzie się info o: \n - zasadach \n - autorach";
-        String header = "About this project";
+        String info = "Common for all modes: \n\nStart New Game - Choose level of difficulty from the list and approve it.\n" +
+                "Pause/Continue - Stopping/Rerunning the game at any time.\nDefault View - Returning to start view after change of camera position.\n" +
+                "Hint - Supporting information that can be used once per game, more details below.\n" +
+                "Save - This button appears after end of the game, you will be able to save most of \ninteresting information" +
+                " about your game in savings folder.\n" +
+                "\nSpecification of hints for game modes:\n\nEasy - The lid of the box opens to show mechanism inside the box.\n" +
+                "Medium - On the right side of the box the information about current number\n" +
+                "changes to correct number for a few seconds.\n" +
+                "Hard - You will be able to return to the previous position of the mechanism.\n\nGood luck <3";
+        String header = "About this game";
 
         JOptionPane.showMessageDialog(window, info, header, JOptionPane.INFORMATION_MESSAGE);
     }
+    public void winInfo(Component window)
+    // Showing information about winning the game
+    {
+        String info = "Your time: " + sS.getElapsedTime() + " s";
+        String header = "!!!You won congratulations!!!";
 
+        JOptionPane.showMessageDialog(window, info, header, JOptionPane.INFORMATION_MESSAGE);
+    }
 }

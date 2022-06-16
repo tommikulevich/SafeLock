@@ -63,7 +63,7 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
     public SafeInteraction sI;
     public SafeSaving sS;
 
-
+    public SafeInteraction isI;
     public SafeUniverse()
     // A panel holding an initial 3D canvas
     {
@@ -83,6 +83,9 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
         canvas3D.requestFocus();
 
         clock = new Timer(10, this);
+
+        isI = new SafeInteraction();
+        isI.info(this);                // showing initializing info window
     }
 
 
@@ -121,7 +124,6 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
         levelChoice.select(levelChoice.getItem(whatHint));
 
         panel1 = new JPanel();
-        panel1.add(infoButton);
         panel1.add(levelChoice);
         panel1.add(startButton);
         add(""+"North", panel1);
@@ -141,6 +143,7 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
         panel2.add(pauseButton);
         panel2.add(setDefViewButton);
         panel2.add(hintButton);
+        panel2.add(infoButton);
         add(""+"South", panel2);
 
         pauseButton.addActionListener(this);
@@ -344,6 +347,7 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
         // adding "Save" button if the game is completely over
         if(!addSave) {
             if(sI.gameEnded == 2) {
+                sI.winInfo(this);
                 panel2.add(saveButton);
                 updateUI();
 
@@ -359,6 +363,8 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
     public void initializeGame()
     // Removing old and creating new canvas. Creating universe with new objects
     {
+        // restarting addSave for another game
+        addSave = false;
         // setting parameters depending on difficulty level
         setLevel();
 
