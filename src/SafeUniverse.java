@@ -54,7 +54,6 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
     // Level and hint parameters
     public int whatHint = 0;
     public int numOfCylinders = 0;
-    public boolean isHint;
     public boolean isHintLI;
     public boolean isHintGN;
     public boolean isHintSB;
@@ -279,7 +278,6 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
         if(action == startButton) {
             // analysis of the selected level and creation of a new world
             initializeGame();
-            isHint = false;
 
             // sending to sS current system time (required for saving)
             sS.setStartTime(System.currentTimeMillis());
@@ -309,7 +307,7 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
             sS.createSave();            // creating a save
 
         // "Hint" button is clicked
-        if(action == hintButton && clock.isRunning() && !isHint) {
+        if(action == hintButton && clock.isRunning()) {
             // hint depending on the difficulty level of the game
             switch(whatHint) {
                 case 0:
@@ -326,7 +324,9 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
             // sending to sS information about use of hint (required for saving)
             sS.hintWasUsed();
 
-            isHint = true;
+            // removing hint button
+            panel2.remove(hintButton);
+            updateUI();
         }
 
         // easy level hint: user can look inside the box and see safe mechanism
@@ -346,6 +346,7 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
             if(sI.gameEnded == 2) {
                 panel2.add(saveButton);
                 updateUI();
+
                 addSave = true;
             }
         }

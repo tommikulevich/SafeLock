@@ -4,18 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c1a41b83-1d09-47eb-abfe-ab797919a7b5" name="Changes" comment="Added new game initialization (with level choice)">
-      <change afterPath="$PROJECT_DIR$/img/darkMetal.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/img/lightMetal.jpg" afterDir="false" />
+    <list default="true" id="c1a41b83-1d09-47eb-abfe-ab797919a7b5" name="Changes" comment="Added new textures. Small modifications in sS class.&quot;Save&quot; button appears only if the game is over. Added new comments. Some code changes and permutations">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/case.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/metal.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/img/veryDarkMetal.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/wood.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/SafeCreation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/SafeCreation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/SafeInteraction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/SafeInteraction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/SafeLock3D.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/SafeLock3D.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/SafePlatformInit.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/SafePlatformInit.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/SafeSaving.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/SafeSaving.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/SafeUniverse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/SafeUniverse.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -141,7 +131,7 @@
       <updated>1653214054849</updated>
       <workItem from="1653214056604" duration="1532000" />
       <workItem from="1653643586954" duration="9792000" />
-      <workItem from="1655325438468" duration="14771000" />
+      <workItem from="1655325438468" duration="15551000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <created>1653215420253</created>
@@ -213,7 +203,14 @@
       <option name="project" value="LOCAL" />
       <updated>1655281047358</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Added new textures. Small modifications in sS class.&quot;Save&quot; button appears only if the game is over. Added new comments. Some code changes and permutations">
+      <created>1655373096596</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1655373096596</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -253,7 +250,8 @@
     <MESSAGE value="Changed buttons. Changed position in &quot;default view&quot; and animation in &quot;look inside&quot;. Added field with actual combination values. Added new hint (giving a num of combination for a few seconds). Small changes in code" />
     <MESSAGE value="Empty commit" />
     <MESSAGE value="Added new game initialization (with level choice)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added new game initialization (with level choice)" />
+    <MESSAGE value="Added new textures. Small modifications in sS class.&quot;Save&quot; button appears only if the game is over. Added new comments. Some code changes and permutations" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added new textures. Small modifications in sS class.&quot;Save&quot; button appears only if the game is over. Added new comments. Some code changes and permutations" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
