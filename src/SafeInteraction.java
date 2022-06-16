@@ -289,25 +289,38 @@ public class SafeInteraction
     public void info(Component window)
     // Showing information about the game
     {
-        String info = "Common for all modes: \n\nStart New Game - Choose level of difficulty from the list and approve it.\n" +
-                "Pause/Continue - Stopping/Rerunning the game at any time.\nDefault View - Returning to start view after change of camera position.\n" +
-                "Hint - Supporting information that can be used once per game, more details below.\n" +
-                "Save - This button appears after end of the game, you will be able to save most of \ninteresting information" +
-                " about your game in savings folder.\n" +
-                "\nSpecification of hints for game modes:\n\nEasy - The lid of the box opens to show mechanism inside the box.\n" +
-                "Medium - On the right side of the box the information about current number\n" +
-                "changes to correct number for a few seconds.\n" +
-                "Hard - You will be able to return to the previous position of the mechanism.\n\nGood luck <3";
-        String header = "About this game";
+        String header = "Safe Lock. About this game";
 
-        JOptionPane.showMessageDialog(window, info, header, JOptionPane.INFORMATION_MESSAGE);
+        String info = "<html> &#10003; You need to find the right combination of the safe with the help of sounds. <br>" +
+                             "&#10003; You can use one hint, which depends on the difficulty level of the game. <br><br>" +
+                             "<u>Common for all modes</u>: <br>" +
+                             "<ul><li><b>Start New Game</b> &#8594; Choose level of difficulty from the list and approve it.<br>" +
+                             "<li><b>Pause/Continue</b>     &#8594; Stopping/Rerunning the game at any time.<br>" +
+                             "<li><b>Default View</b>       &#8594; Returning to start view after change of camera position.<br>" +
+                             "<li><b>Hint</b>               &#8594; Supporting information that can be used once per game, more details below.<br>" +
+                             "<li><b>Save</b>               &#8594; This button appears after end of the game, you will be able to save most of <br>" +
+                             "interesting information about your game in savings folder.</ul>" +
+                             "<u>Specification of hints for game modes</u>: <br>" +
+                             "<ul><li><i>Easy</i> &#8594; The lid of the box opens to show mechanism inside the box.<br>" +
+                             "<li><i>Medium</i>   &#8594; On the right side of the box the information about current number<br>" +
+                             "changes to correct number for a few seconds.<br>" +
+                             "<li><i>Hard</i>     &#8594; You will be able to return to the previous position of the mechanism.</ul>" +
+                             "Good luck! &#128151; </html>";
+
+        JLabel label = new JLabel(info);
+        label.setFont(new Font("sans-serif", Font.PLAIN, 14));
+
+        JOptionPane.showMessageDialog(window, label, header, JOptionPane.INFORMATION_MESSAGE);
     }
+
+
     public void winInfo(Component window)
     // Showing information about winning the game
     {
         String info = "Your time: " + sS.getElapsedTime() + " s";
-        String header = "!!!You won congratulations!!!";
+        String header = "WIN! Congratulations!";
 
         JOptionPane.showMessageDialog(window, info, header, JOptionPane.INFORMATION_MESSAGE);
     }
+
 }

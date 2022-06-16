@@ -63,7 +63,7 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
     public SafeInteraction sI;
     public SafeSaving sS;
 
-    public SafeInteraction isI;
+
     public SafeUniverse()
     // A panel holding an initial 3D canvas
     {
@@ -84,8 +84,8 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
 
         clock = new Timer(10, this);
 
-        isI = new SafeInteraction();
-        isI.info(this);                // showing initializing info window
+        sI = new SafeInteraction();
+        sI.info(this);          // showing initializing info window
     }
 
 
@@ -140,10 +140,10 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
         saveButton       = new Button("Save");
 
         panel2 = new JPanel();
+        panel2.add(infoButton);
         panel2.add(pauseButton);
         panel2.add(setDefViewButton);
         panel2.add(hintButton);
-        panel2.add(infoButton);
         add(""+"South", panel2);
 
         pauseButton.addActionListener(this);
@@ -307,7 +307,7 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
 
         // "Save" button is clicked
         if(action == saveButton)
-            sS.createSave();            // creating a save
+            sS.createSave();                // creating a save
 
         // "Hint" button is clicked
         if(action == hintButton && clock.isRunning()) {
@@ -348,7 +348,8 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
         if(!addSave) {
             if(sI.gameEnded == 2) {
                 sI.winInfo(this);
-                panel2.add(saveButton);
+
+                panel1.add(saveButton);
                 updateUI();
 
                 addSave = true;
@@ -365,6 +366,7 @@ public class SafeUniverse extends JPanel implements ActionListener, KeyListener
     {
         // restarting addSave for another game
         addSave = false;
+
         // setting parameters depending on difficulty level
         setLevel();
 

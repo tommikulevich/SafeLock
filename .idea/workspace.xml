@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c1a41b83-1d09-47eb-abfe-ab797919a7b5" name="Changes" comment="Added new textures. Small modifications in sS class.&quot;Save&quot; button appears only if the game is over. Added new comments. Some code changes and permutations">
+    <list default="true" id="c1a41b83-1d09-47eb-abfe-ab797919a7b5" name="Changes" comment="&quot;Hint&quot; button is deleted if it is used">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/SafeInteraction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/SafeInteraction.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/SafeUniverse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/SafeUniverse.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -131,7 +132,8 @@
       <updated>1653214054849</updated>
       <workItem from="1653214056604" duration="1532000" />
       <workItem from="1653643586954" duration="9792000" />
-      <workItem from="1655325438468" duration="15551000" />
+      <workItem from="1655325438468" duration="16778000" />
+      <workItem from="1655408711129" duration="4709000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <created>1653215420253</created>
@@ -210,7 +212,14 @@
       <option name="project" value="LOCAL" />
       <updated>1655373096596</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="&quot;Hint&quot; button is deleted if it is used">
+      <created>1655373841833</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1655373841833</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -251,7 +260,8 @@
     <MESSAGE value="Empty commit" />
     <MESSAGE value="Added new game initialization (with level choice)" />
     <MESSAGE value="Added new textures. Small modifications in sS class.&quot;Save&quot; button appears only if the game is over. Added new comments. Some code changes and permutations" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added new textures. Small modifications in sS class.&quot;Save&quot; button appears only if the game is over. Added new comments. Some code changes and permutations" />
+    <MESSAGE value="&quot;Hint&quot; button is deleted if it is used" />
+    <option name="LAST_COMMIT_MESSAGE" value="&quot;Hint&quot; button is deleted if it is used" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
