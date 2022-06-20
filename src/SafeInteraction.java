@@ -299,7 +299,8 @@ public class SafeInteraction
                              "<li><b>Default View</b>       &#8594; Returning to start view after change of camera position.<br>" +
                              "<li><b>Hint</b>               &#8594; Supporting information that can be used once per game, more details below.<br>" +
                              "<li><b>Save</b>               &#8594; This button appears after end of the game, you will be able to save most of <br>" +
-                             "interesting information about your game in savings folder.</ul>" +
+                             "interesting information about your game in savings folder." +
+                             "<li><b>Left/Right arrow</b>   &#8594; Controlling rotation of the mechanism.<br></ul>" +
                              "<u>Specification of hints for game modes</u>: <br>" +
                              "<ul><li><i>Easy</i> &#8594; The lid of the box opens to show mechanism inside the box.<br>" +
                              "<li><i>Medium</i>   &#8594; On the right side of the box the information about current number<br>" +
