@@ -1,3 +1,11 @@
 # 🔒 3D Safe Mechanism
 
-_To be continued_
+### 📝 About
+_...to be continued..._
+
+### 📸 Screenshots
+_...to be continued..._
+
+### 💪 Authors 
+- Radosław Dębiński 
+- Tomash Mikulevich
