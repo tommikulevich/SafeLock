@@ -1,0 +1,4 @@
+Game Time: 14 s
+Correct Password: 69062
+Hint was used: True
+Introduced combination: L-L-L-L-L-L-R-R-R-R-R-R-R-L-R-R-R-R-R-R-R-R-R-R-R-R-R-R-L-L-L-L-L-L
