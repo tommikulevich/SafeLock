@@ -1,6 +1,6 @@
 # 🔒 3D Safe Mechanism
 
-> ☣ **Warning:** This project was created for educational purposes only. It may contain non-optimal or outdated solutions.
+> ☣ **Warning:** This project was created during my studies for educational purposes only. It may contain non-optimal or outdated solutions.
 
 ### 📝 About
 **3D Safe Mechanism** game has been implemented. The program, when launched, generates *a combination* that must be entered to complete the game successfully, which is signaled by dropping *the winning box*. Game indicates the correct orientation of the object manipulated by **sounds**. In addition, game interface includes a number of other interactions, the description of which can be found in **“Info”** section displayed each time before starting the game and available under the button of the same name.
